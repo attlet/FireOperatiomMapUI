@@ -17,10 +17,23 @@
         app:umanoScrollableView="@id/recyclerView"
         app:umanoShadowHeight="4dp">
 
-        <com.github.chrisbanes.photoview.PhotoView
-            android:id="@+id/photo_view"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent">
+
+            <com.github.chrisbanes.photoview.PhotoView
+                android:id="@+id/photo_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <ImageView
+                android:id="@+id/pin"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/pin"
+                android:visibility="invisible" />
+        </FrameLayout>
 
         <include layout="@layout/sliding_up_panel" />
 

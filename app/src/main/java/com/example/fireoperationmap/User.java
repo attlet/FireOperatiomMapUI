@@ -2,19 +2,15 @@ package com.example.fireoperationmap;
 
 public class User {
 
-    private String photo_url;
     private String id;
     private String st_name;
     private String address;
     private String structure;
     private String floor;
     private String st_type;
-
     private String fire_plug;
+    private String photo_url;
 
-
-    private String phone1;
-    private String phone2;
 
     public User(){}
 

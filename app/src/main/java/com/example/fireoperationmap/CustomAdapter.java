@@ -67,7 +67,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
     }
 
     class CustomViewHolder extends RecyclerView.ViewHolder {
-        TextView id, st_name, address, structure, floor, st_type, facility, fire_plug;
+        TextView id, st_name, address, structure, floor, st_type, fire_plug;
         ImageView photo_url;
         CustomViewHolder(View itemView) {
             super(itemView);
@@ -77,7 +77,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
             structure = itemView.findViewById(R.id.structure);
             floor = itemView.findViewById(R.id.floor);
             st_type = itemView.findViewById(R.id.st_type);
-            facility = itemView.findViewById(R.id.facility);
             fire_plug = itemView.findViewById(R.id.fire_flug);
             photo_url = itemView.findViewById(R.id.photo_url);
 
@@ -109,9 +108,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
         holder.st_name.setText(currentItem.getTagSt_name());
         holder.structure.setText(currentItem.getTagStructure());
         holder.st_type.setText(currentItem.getTagSt_type());
-        holder.facility.setText(currentItem.getTagFaclility());
         holder.fire_plug.setText(currentItem.getTagFire_plug());
-
     }
 
     @Override

@@ -7,14 +7,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.Matrix;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Display;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -79,41 +83,42 @@ public class MainActivity extends AppCompatActivity {
         adapter.setOnItemClickListener((view, position) -> {
             User user = adapter.getItem(position);
             Toast.makeText(getApplicationContext(), user.getId() + "가 선택됨", Toast.LENGTH_SHORT).show();
+            ImageView icon = findViewById(R.id.pin);
 
             float[] matrix = new float[9];
             Matrix m = new Matrix();
             float dx, dy;
-            float middleX = 540f;
-            float middleY = 600f;
+            Display display = getWindowManager().getDefaultDisplay();
+            Point size = new Point();
+            display.getSize(size);
+            float middleX = (size.x) * 0.5f;
+            float middleY = (size.y) * 0.3f;
+            photoView.setScale(3.0f);
+            photoView.getImageMatrix().getValues(matrix);
 
-                photoView.setImageResource(R.drawable.test_map2);
+            Log.d("pre rect ", "left " + photoView.getDisplayRect().left + ", right " + photoView.getDisplayRect().right + " ,top: " + photoView.getDisplayRect().top);
+            Log.d("pre matrix", "matrix[2]: " + matrix[2] + ", matrix[5]" + matrix[5]);
+            dx = middleX - (matrix[2] + (photoView.getDisplayRect().right - photoView.getDisplayRect().left) * 0.75f);
+            dy = middleY - (matrix[5] + (photoView.getDisplayRect().bottom - photoView.getDisplayRect().top) * 0.3f);
 
-                photoView.getImageMatrix().getValues(matrix);
-                photoView.setScale(photoView.getMaximumScale());
-                matrix[0] = 1.2671099f;
-                matrix[2] = -1080f;
-                matrix[4] = 1.2671099f;
-                matrix[5] = -388.37793f;
+            Log.d("dx", "is " + dx);
+            Log.d("dy", "is " + dy);
 
-                Log.d("pre middle " , "middle x: " + middleX + ", middle y: " + middleY);
-                Log.d("pre rect ", "left " + photoView.getDisplayRect().left + ", right " + photoView.getDisplayRect().right + " ,top: " + photoView.getDisplayRect().top);
-                Log.d("pre matrix", "matrix[2]: "+ matrix[2] + ", matrix[5]" + matrix[5]);
-                dx = middleX - (matrix[2] + (photoView.getDisplayRect().right- photoView.getDisplayRect().left) * 0.75f);
-                dy = middleY - (matrix[5] + (photoView.getDisplayRect().bottom - photoView.getDisplayRect().top) * 0.3f);
+            matrix[2] = matrix[2] + dx;
+            matrix[5] = matrix[5] + dy;
+            Log.d("post matrix", "matrix[2]: " + matrix[2] + ", matrix[5]: " + matrix[5]);
+            m.setValues(matrix);
+            photoView.setImageMatrix(m);
 
-                Log.d("dx", "is " + dx);
-                Log.d("dy", "is " + dy);
-
-                matrix[2] = matrix[2] + dx;
-                matrix[5] = matrix[5] + dy;
-                Log.d("post matrix", "matrix[2]: " + matrix[2] + ", matrix[5]: " + matrix[5]);
-                m.setValues(matrix);
-                photoView.setImageMatrix(m);
-
-                Log.d("m vales", "m : " + m);
-                photoView.setOnMatrixChangeListener(rect -> Log.d("matirx change", "left: " + photoView.getDisplayRect().left + " ,top" + photoView.getDisplayRect().top));
-
-
+            icon.setVisibility(View.VISIBLE);
+            icon.setX(middleX);
+            icon.setY(middleY);
+            Log.d("m values", "m : " + m);
+            photoView.setOnMatrixChangeListener(rect -> {
+                Log.d("icon pos", "icon x: " + rect.left + ", icon y:" + icon.getY());
+                icon.setX(rect.left + (photoView.getDisplayRect().right - photoView.getDisplayRect().left) * 0.75f);
+                icon.setY(rect.top + (photoView.getDisplayRect().bottom - photoView.getDisplayRect().top) * 0.3f);
+            });
         });
     }
 
@@ -173,8 +178,5 @@ public class MainActivity extends AppCompatActivity {
         photoView.setImageResource(R.drawable.naver_map2);
 
         photoView.setMaximumScale(3.0f);
-
-        //테스트 용 좌표 찍기
-//        photoView.setOnMatrixChangeListener(rect -> Log.d("matrix", "left: " + rect.left + ", top: " + rect.top ));
     }
 }
