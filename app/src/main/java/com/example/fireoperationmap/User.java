@@ -1,7 +1,6 @@
 package com.example.fireoperationmap;
 
 public class User {
-
     private String id;
     private String st_name;
     private String address;
@@ -9,7 +8,6 @@ public class User {
     private String floor;
     private String st_type;
     private String fire_plug;
-    private String photo_url;
 
 
     public User(){}
@@ -20,9 +18,6 @@ public class User {
     public void setFloor(String floor) {this.floor = floor;}
     public void setSt_type(String st_type) {this.st_type = st_type;}
     public void setId(String id) {this.id = id;}
-    public void setProfile(String photo_url) {
-        this.photo_url = photo_url;
-    }
     public void setFire_plug(String fire_plug) {
         this.fire_plug = fire_plug;
     }
@@ -34,9 +29,6 @@ public class User {
     public String getStructure() {return this.structure;}
     public String getFloor() {return this.floor;}
     public String getSt_type() {return this.st_type;}
-    public String getPhoto_url() {
-        return photo_url;
-    }
     public String getFire_plug() {
         return fire_plug;
     }

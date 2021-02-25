@@ -95,7 +95,7 @@
             android:layout_height="250dp"
             android:layout_margin="7dp"
             android:src="@drawable/ic_launcher_background"
-            android:id="@+id/photo_url"/>
+            android:id="@+id/photo"/>
 
     </TableLayout>
 

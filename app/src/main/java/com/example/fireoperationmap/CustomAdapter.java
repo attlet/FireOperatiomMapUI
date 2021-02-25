@@ -17,8 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomViewHolder> implements Filterable {
-    private final List<User> userList = new ArrayList<>();
-    private final List<User> userListFull = new ArrayList<>();
+    private List<User> userList = new ArrayList<>();
+    private List<User> userListFull = new ArrayList<>();
     private CustomAdapter.OnPersonItemClickLister listener;
     private String searchState = "st_name";
 
@@ -68,7 +68,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
 
     class CustomViewHolder extends RecyclerView.ViewHolder {
         TextView id, st_name, address, structure, floor, st_type, fire_plug;
-        ImageView photo_url;
+        ImageView photo;
         CustomViewHolder(View itemView) {
             super(itemView);
             id = itemView.findViewById(R.id.id);
@@ -78,7 +78,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
             floor = itemView.findViewById(R.id.floor);
             st_type = itemView.findViewById(R.id.st_type);
             fire_plug = itemView.findViewById(R.id.fire_flug);
-            photo_url = itemView.findViewById(R.id.photo_url);
+            photo = itemView.findViewById(R.id.photo);
 
             itemView.setOnClickListener(view -> {
                 int position = getAdapterPosition();
@@ -99,9 +99,11 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
     @Override
     public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
         User currentItem = userList.get(position);
+        String sectionNum = currentItem.getId().split("-")[0];
+        String placeNum = currentItem.getId().split("-")[1];
         Glide.with(holder.itemView)
-                .load(currentItem.getPhoto_url())
-                .into(holder.photo_url);
+                .load("https://firebasestorage.googleapis.com/v0/b/st-marketplace-operation-map.appspot.com/o/"+ sectionNum + "_Section%2F" + sectionNum + '_' + placeNum + ".png?alt=media")
+                .into(holder.photo);
         holder.id.setText(currentItem.getTagId());
         holder.address.setText(currentItem.getTagAddress());
         holder.floor.setText(currentItem.getTagFloor());
@@ -114,6 +116,11 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
     @Override
     public int getItemCount() {
         return userList.size();
+    }
+
+    public void init() {
+        userList = new ArrayList<>();
+        userListFull = new ArrayList<>();
     }
 
     public User getItem(int position) {

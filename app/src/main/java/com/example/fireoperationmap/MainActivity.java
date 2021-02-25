@@ -30,12 +30,18 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class MainActivity extends AppCompatActivity {
 
     private CustomAdapter adapter;
     private RecyclerView recyclerView;
     private SlidingUpPanelLayout slidingUpPanelLayout;
     private PhotoView photoView;
+    private Map<Integer, Map<Integer, Place>> sectionData = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +61,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initializeAdapterAndRecyclerView() {
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("User");
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("User");
+        DatabaseReference sectionRef = FirebaseDatabase.getInstance().getReference().child("Section");
         adapter = new CustomAdapter();
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -63,10 +70,11 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
 
         //파에어베이스에서 adapter.userList로 데이터를 불러옴
-        ref.addValueEventListener(new ValueEventListener() {
+        userRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot data : dataSnapshot.getChildren()) {
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                adapter.init();
+                for (DataSnapshot data : snapshot.getChildren()) {
                     User user = data.getValue(User.class);
                     adapter.addUser(user);
                 }
@@ -74,15 +82,41 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {}
+        });
 
+        sectionRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                sectionData = new HashMap<>();
+                for(DataSnapshot sectionData : snapshot.getChildren()) {
+                    int sectionKey = Integer.parseInt(sectionData.getKey().split("_")[1]);
+                    if (!MainActivity.this.sectionData.containsKey(sectionKey)) {
+                        MainActivity.this.sectionData.put(sectionKey, new HashMap<>());
+                    }
+                    for (DataSnapshot placeData : sectionData.getChildren()) {
+                        Place place = placeData.getValue(Place.class);
+                        int placeKey = Integer.parseInt(placeData.getKey().split("_")[1]);
+                        MainActivity.this.sectionData.get(sectionKey).put(placeKey, place);
+                    }
+                }
             }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
         });
 
         //아이템 클릭시 이벤트 설정
         adapter.setOnItemClickListener((view, position) -> {
             User user = adapter.getItem(position);
-            Toast.makeText(getApplicationContext(), user.getId() + "가 선택됨", Toast.LENGTH_SHORT).show();
+            int sectionNum = Integer.parseInt(user.getId().split("-")[0]);
+            int placeNum = Integer.parseInt(user.getId().split("-")[1]);
+
+            //비율 좌표 가져오기!!! double형임에 유의 (아래 자료형들 전부 double로 바꿔야 함)
+            double ratioX = sectionData.get(sectionNum).get(placeNum).getX();
+            double ratioY = sectionData.get(sectionNum).get(placeNum).getY();
+
+            Toast.makeText(getApplicationContext(), user.getId() + "가 선택됨 ", Toast.LENGTH_SHORT).show();
             ImageView icon = findViewById(R.id.pin);
 
             float[] matrix = new float[9];
