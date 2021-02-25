@@ -25,11 +25,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginBottom="25dp"
-            android:drawableLeft="@drawable/fireplug"
+
+            android:drawableTop="@drawable/fireplug"
             android:layout_marginLeft="3dp"
             android:fontFamily="sans-serif-black"
             android:text="소화전"
+            android:textSize="10sp"
             android:textColor="#000000" />
 
         <TextView
@@ -38,10 +39,11 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@id/icon_text"
-            android:drawableLeft="@drawable/fireplug2"
+            android:drawableTop="@drawable/fireplug2"
             android:fontFamily="sans-serif-black"
             android:layout_marginLeft="5dp"
             android:text="지하 소화전"
+            android:textSize="10sp"
             android:textColor="#000000" />
 
         <TextView
@@ -50,19 +52,20 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@id/icon_text2"
-            android:drawableLeft="@drawable/blue_square"
+            android:drawableTop="@drawable/blue_square"
             android:fontFamily="sans-serif-black"
             android:layout_marginLeft="5dp"
             android:text="소화전함"
+            android:textSize="10sp"
             android:textColor="#000000" />
 
         <LinearLayout
-            android:layout_marginTop="5dp"
-            android:layout_marginRight="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignRight="@id/icon_text3"
-            android:layout_alignParentRight="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="300dp"
+
+            android:layout_marginRight="5dp"
             android:orientation="vertical">
 
 
@@ -74,7 +77,7 @@
                 android:fontFamily="sans-serif-black"
                 android:text=" : [협소구간] 중앙10호"
                 android:textColor="#000000"
-                android:textSize="12sp" />
+                android:textSize="8sp" />
 
             <TextView
                 android:id="@+id/textView2"
@@ -84,7 +87,7 @@
                 android:fontFamily="sans-serif-black"
                 android:text=" : 중형펌프 진입 가능"
                 android:textColor="#000000"
-                android:textSize="12sp" />
+                android:textSize="8sp" />
 
             <TextView
                 android:id="@+id/textView3"
@@ -94,7 +97,7 @@
                 android:fontFamily="sans-serif-black"
                 android:text=" : 아케이드 설치 구간"
                 android:textColor="#000000"
-                android:textSize="12sp" />
+                android:textSize="8sp" />
         </LinearLayout>
 
 

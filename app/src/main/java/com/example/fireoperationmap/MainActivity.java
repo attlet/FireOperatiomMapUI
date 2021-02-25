@@ -86,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
             float middleX = 540f;
             float middleY = 600f;
 
-            if(user.getNum() == 1){
                 photoView.setImageResource(R.drawable.test_map2);
 
                 photoView.getImageMatrix().getValues(matrix);
@@ -113,63 +112,6 @@ public class MainActivity extends AppCompatActivity {
 
                 Log.d("m vales", "m : " + m);
                 photoView.setOnMatrixChangeListener(rect -> Log.d("matirx change", "left: " + photoView.getDisplayRect().left + " ,top" + photoView.getDisplayRect().top));
-            }
-            else if(user.getNum() == 2){
-                photoView.setImageResource(R.drawable.test_map3);
-
-                photoView.getImageMatrix().getValues(matrix);
-                photoView.setScale(photoView.getMaximumScale());
-                matrix[0] = 1.2671099f;
-                matrix[2] = -1080f;
-                matrix[4] = 1.2671099f;
-                matrix[5] = -388.37793f;
-
-                Log.d("pre middle " , "middle x: " + middleX + ", middle y: " + middleY);
-                Log.d("pre rect ", "left " + photoView.getDisplayRect().left + ", right " + photoView.getDisplayRect().right + " ,top: " + photoView.getDisplayRect().top);
-                Log.d("pre matrix", "matrix[2]: "+ matrix[2] + ", matrix[5]" + matrix[5]);
-                dx = middleX - (matrix[2] + (photoView.getDisplayRect().right- photoView.getDisplayRect().left) * 0.75f);
-                dy = middleY - (matrix[5] + (photoView.getDisplayRect().bottom - photoView.getDisplayRect().top) * 0.3f);
-
-                Log.d("dx", "is " + dx);
-                Log.d("dy", "is " + dy);
-
-                matrix[2] = matrix[2] + dx;
-                matrix[5] = matrix[5] + dy;
-                Log.d("post matrix", "matrix[2]: " + matrix[2] + ", matrix[5]: " + matrix[5]);
-                m.setValues(matrix);
-                photoView.setImageMatrix(m);
-
-                Log.d("m vales", "m : " + m);
-                photoView.setOnMatrixChangeListener(rect -> Log.d("matirx change", "left: " + photoView.getDisplayRect().left + " ,top" + photoView.getDisplayRect().top));
-            }
-            else {
-                photoView.setImageResource(R.drawable.test_map4);
-
-                photoView.getImageMatrix().getValues(matrix);
-                photoView.setScale(photoView.getMaximumScale());
-                matrix[0] = 1.2671099f;
-                matrix[2] = -1080f;
-                matrix[4] = 1.2671099f;
-                matrix[5] = -388.37793f;
-
-                Log.d("pre middle " , "middle x: " + middleX + ", middle y: " + middleY);
-                Log.d("pre rect ", "left " + photoView.getDisplayRect().left + ", right " + photoView.getDisplayRect().right + " ,top: " + photoView.getDisplayRect().top);
-                Log.d("pre matrix", "matrix[2]: "+ matrix[2] + ", matrix[5]" + matrix[5]);
-                dx = middleX - (matrix[2] + (photoView.getDisplayRect().right- photoView.getDisplayRect().left) * 0.75f);
-                dy = middleY - (matrix[5] + (photoView.getDisplayRect().bottom - photoView.getDisplayRect().top) * 0.3f);
-
-                Log.d("dx", "is " + dx);
-                Log.d("dy", "is " + dy);
-
-                matrix[2] = matrix[2] + dx;
-                matrix[5] = matrix[5] + dy;
-                Log.d("post matrix", "matrix[2]: " + matrix[2] + ", matrix[5]: " + matrix[5]);
-                m.setValues(matrix);
-                photoView.setImageMatrix(m);
-
-                Log.d("m vales", "m : " + m);
-                photoView.setOnMatrixChangeListener(rect -> Log.d("matirx change", "left: " + photoView.getDisplayRect().left + " ,top" + photoView.getDisplayRect().top));
-            }
 
 
         });

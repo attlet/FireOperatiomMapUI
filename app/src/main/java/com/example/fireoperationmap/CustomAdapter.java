@@ -5,10 +5,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,7 +67,8 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
     }
 
     class CustomViewHolder extends RecyclerView.ViewHolder {
-        TextView id, st_name, address, structure, floor, st_type, facility, person, phone1, phone2;
+        TextView id, st_name, address, structure, floor, st_type, facility, fire_plug;
+        ImageView photo_url;
         CustomViewHolder(View itemView) {
             super(itemView);
             id = itemView.findViewById(R.id.id);
@@ -74,9 +78,8 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
             floor = itemView.findViewById(R.id.floor);
             st_type = itemView.findViewById(R.id.st_type);
             facility = itemView.findViewById(R.id.facility);
-            person = itemView.findViewById(R.id.person);
-            phone1 = itemView.findViewById(R.id.phone1);
-            phone2 = itemView.findViewById(R.id.phone2);
+            fire_plug = itemView.findViewById(R.id.fire_flug);
+            photo_url = itemView.findViewById(R.id.photo_url);
 
             itemView.setOnClickListener(view -> {
                 int position = getAdapterPosition();
@@ -97,6 +100,9 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
     @Override
     public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
         User currentItem = userList.get(position);
+        Glide.with(holder.itemView)
+                .load(currentItem.getPhoto_url())
+                .into(holder.photo_url);
         holder.id.setText(currentItem.getTagId());
         holder.address.setText(currentItem.getTagAddress());
         holder.floor.setText(currentItem.getTagFloor());
@@ -104,9 +110,8 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
         holder.structure.setText(currentItem.getTagStructure());
         holder.st_type.setText(currentItem.getTagSt_type());
         holder.facility.setText(currentItem.getTagFaclility());
-        holder.person.setText(currentItem.getTagPerson());
-        holder.phone1.setText(currentItem.getTagPhone1());
-        holder.phone2.setText(currentItem.getTagPhone2());
+        holder.fire_plug.setText(currentItem.getTagFire_plug());
+
     }
 
     @Override

@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -74,12 +75,6 @@
                 android:text="TextView"
                 android:fontFamily="sans-serif-black"/>
 
-            <TextView
-                android:id="@+id/facility"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="TextView"
-                android:fontFamily="sans-serif-black"/>
 
         </TableRow>
 
@@ -88,26 +83,20 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/person"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="TextView"
-                android:fontFamily="sans-serif-black"/>
-
-            <TextView
-                android:id="@+id/phone1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="TextView"
-                android:fontFamily="sans-serif-black"/>
-
-            <TextView
-                android:id="@+id/phone2"
+                android:id="@+id/fire_flug"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TextView"
                 android:fontFamily="sans-serif-black"/>
         </TableRow>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_margin="7dp"
+            android:src="@drawable/ic_launcher_background"
+            android:id="@+id/photo_url"/>
+
     </TableLayout>
 
 </androidx.cardview.widget.CardView>
