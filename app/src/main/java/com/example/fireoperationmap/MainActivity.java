@@ -42,7 +42,8 @@ public class MainActivity extends AppCompatActivity {
     private SlidingUpPanelLayout slidingUpPanelLayout;
     private PhotoView photoView;
     private Map<Integer, Map<Integer, Place>> sectionData = new HashMap<>();
-
+    private ImageView icon;
+    private double pin_width, pin_height;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,12 +53,19 @@ public class MainActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.hide();
-
         slidingUpPanelLayout = findViewById(R.id.sliding_layout);
 
         createMapView();
         initializeAdapterAndRecyclerView();
         createSearchView();
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        icon = (ImageView)findViewById(R.id.pin);
+        pin_width = icon.getWidth();
+        pin_height = icon.getHeight();
     }
 
     private void initializeAdapterAndRecyclerView() {
@@ -121,37 +129,39 @@ public class MainActivity extends AppCompatActivity {
 
             float[] matrix = new float[9];
             Matrix m = new Matrix();
-            float dx, dy;
+            double dx, dy;
             Display display = getWindowManager().getDefaultDisplay();
             Point size = new Point();
             display.getSize(size);
-            float middleX = (size.x) * 0.5f;
-            float middleY = (size.y) * 0.3f;
+            double middleX = (size.x) * 0.5;
+            double middleY = (size.y) * 0.3;
             photoView.setScale(3.0f);
             photoView.getImageMatrix().getValues(matrix);
 
-            Log.d("pre rect ", "left " + photoView.getDisplayRect().left + ", right " + photoView.getDisplayRect().right + " ,top: " + photoView.getDisplayRect().top);
-            Log.d("pre matrix", "matrix[2]: " + matrix[2] + ", matrix[5]" + matrix[5]);
-            dx = middleX - (matrix[2] + (photoView.getDisplayRect().right - photoView.getDisplayRect().left) * 0.75f);
-            dy = middleY - (matrix[5] + (photoView.getDisplayRect().bottom - photoView.getDisplayRect().top) * 0.3f);
+            Log.d("ratio values" , "retio x: " + ratioX + ", ratio y: " + ratioY);
+            Log.d("get width and height", "width: " + pin_width + ", height " + pin_height);
+            dx = middleX - (matrix[2] + (photoView.getDisplayRect().right - photoView.getDisplayRect().left) * ratioX);
+            dy = middleY - (matrix[5] + (photoView.getDisplayRect().bottom - photoView.getDisplayRect().top) * ratioY);
 
             Log.d("dx", "is " + dx);
             Log.d("dy", "is " + dy);
 
-            matrix[2] = matrix[2] + dx;
-            matrix[5] = matrix[5] + dy;
+            matrix[2] = matrix[2] + (float)dx;
+            matrix[5] = matrix[5] + (float)dy;
             Log.d("post matrix", "matrix[2]: " + matrix[2] + ", matrix[5]: " + matrix[5]);
             m.setValues(matrix);
             photoView.setImageMatrix(m);
 
             icon.setVisibility(View.VISIBLE);
-            icon.setX(middleX);
-            icon.setY(middleY);
+            icon.setX((float)(middleX - (pin_width/2)));
+            icon.setY((float)(middleY - (pin_height)));
             Log.d("m values", "m : " + m);
+            Log.d("pin position", "pin x: " + (float)(middleX - (pin_width/2)) + ", pin y: " + (float)(middleY - (pin_height)));
+            Log.d("middle values" , "middle x: " + middleX + ", middle y" + middleY);
             photoView.setOnMatrixChangeListener(rect -> {
-                Log.d("icon pos", "icon x: " + rect.left + ", icon y:" + icon.getY());
-                icon.setX(rect.left + (photoView.getDisplayRect().right - photoView.getDisplayRect().left) * 0.75f);
-                icon.setY(rect.top + (photoView.getDisplayRect().bottom - photoView.getDisplayRect().top) * 0.3f);
+                Log.d("icon pos", "icon x: " + icon.getX() + ", icon y:" + icon.getY());
+                icon.setX((float)(rect.left + ((photoView.getDisplayRect().right - photoView.getDisplayRect().left) * ratioX) - pin_width/2));
+                icon.setY((float)(rect.top + ((photoView.getDisplayRect().bottom - photoView.getDisplayRect().top) * ratioY) - pin_height));
             });
         });
     }
