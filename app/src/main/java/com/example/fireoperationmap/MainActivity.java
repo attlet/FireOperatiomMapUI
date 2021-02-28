@@ -42,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
     private SlidingUpPanelLayout slidingUpPanelLayout;
     private PhotoView photoView;
     private Map<Integer, Map<Integer, Place>> sectionData = new HashMap<>();
-    private ImageView icon;
     private double pin_width, pin_height;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        icon = (ImageView)findViewById(R.id.pin);
+        ImageView icon = (ImageView) findViewById(R.id.pin);
         pin_width = icon.getWidth();
         pin_height = icon.getHeight();
     }
@@ -221,6 +220,7 @@ public class MainActivity extends AppCompatActivity {
         photoView = findViewById(R.id.photo_view);
         photoView.setImageResource(R.drawable.naver_map2);
 
-        photoView.setMaximumScale(3.0f);
+        //줌 비율 설정!! 지도 이미지를 참고해서 적당한 확대/축소 비율 찾기
+        photoView.setMaximumScale(5.0f);
     }
 }
