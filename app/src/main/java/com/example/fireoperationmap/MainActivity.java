@@ -218,7 +218,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void createMapView(){
         photoView = findViewById(R.id.photo_view);
-        photoView.setImageResource(R.drawable.naver_map2);
+        photoView.setImageResource(R.drawable.operation_map);
 
         //줌 비율 설정!! 지도 이미지를 참고해서 적당한 확대/축소 비율 찾기
         photoView.setMaximumScale(5.0f);
