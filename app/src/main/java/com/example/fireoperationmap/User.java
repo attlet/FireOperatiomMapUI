@@ -9,8 +9,17 @@ public class User {
     private String st_type;
     private String fire_plug;
 
-
     public User(){}
+
+    public User(User user) {
+        this.id = user.id;
+        this.st_name = user.st_name;
+        this.address = user.address;
+        this.structure = user.structure;
+        this.floor = user.floor;
+        this.st_type = user.st_type;
+        this.fire_plug = user.fire_plug;
+    }
 
     public void setSt_name(String st_name) {this.st_name = st_name;}
     public void setAddress(String address) {this.address = address;}

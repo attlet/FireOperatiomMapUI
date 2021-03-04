@@ -14,11 +14,13 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -30,9 +32,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private SlidingUpPanelLayout slidingUpPanelLayout;
     private PhotoView photoView;
+    EditText searchField;
     private Map<Integer, Map<Integer, Place>> sectionData = new HashMap<>();
     private double pin_width, pin_height;
     @Override
@@ -52,7 +53,9 @@ public class MainActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.hide();
-        slidingUpPanelLayout = findViewById(R.id.sliding_layout);
+
+        slidingUpPanelLayout = findViewById(R.id.slidingLayout);
+        searchField = findViewById(R.id.searchField);
 
         createMapView();
         initializeAdapterAndRecyclerView();
@@ -114,10 +117,13 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //아이템 클릭시 이벤트 설정
-        adapter.setOnItemClickListener((view, position) -> {
+        adapter.setOnSimpleItemClickListener((view, position) -> {
             User user = adapter.getItem(position);
             int sectionNum = Integer.parseInt(user.getId().split("-")[0]);
             int placeNum = Integer.parseInt(user.getId().split("-")[1]);
+
+            //아이템 클릭시 검색창 비활성화
+            searchField.clearFocus();
 
             //비율 좌표 가져오기!!! double형임에 유의 (아래 자료형들 전부 double로 바꿔야 함)
             double ratioX = sectionData.get(sectionNum).get(placeNum).getX();
@@ -166,7 +172,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void createSearchView() {
-        EditText searchField = findViewById(R.id.searchField);
         RadioGroup radioGroup = findViewById(R.id.radioGroup);
         ImageButton searchButton = findViewById(R.id.searchButton);
 
@@ -183,10 +188,21 @@ public class MainActivity extends AppCompatActivity {
         });
 
         searchButton.setOnClickListener(view -> {
-            InputMethodManager manager = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
-            //여기 수정 해야함 manger가 불러와졌을때만 적용할 수 있도록
-            //manager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-            //slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+            if (searchField.hasFocus()) {
+                InputMethodManager manager = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                manager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+                searchField.clearFocus();
+            }
+        });
+
+        //입력중일때 추천검색어 고민중
+        searchField.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                searchField.setText("");
+                adapter.clearRecyclerView();
+                //slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+            }
         });
 
         searchField.setOnEditorActionListener((view, actionId, event) -> {
@@ -194,9 +210,9 @@ public class MainActivity extends AppCompatActivity {
                 InputMethodManager manager = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
                 manager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                 slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+                searchField.clearFocus();
                 return true;
             }
-
             return false;
         });
 
@@ -207,6 +223,12 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                /* 검색창이 비어있는 상태에서 모든 결과를 띄울것인가 말것인가
+                if (s.toString().trim().equals("")) {
+                    adapter.clearRecyclerView();
+                }
+                else adapter.getFilter().filter(s);
+                */
                 adapter.getFilter().filter(s);
             }
 
