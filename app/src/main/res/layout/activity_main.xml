@@ -14,7 +14,7 @@
         android:gravity="bottom"
         app:umanoFadeColor="@android:color/transparent"
         app:umanoPanelHeight="60dp"
-        app:umanoScrollableView="@id/recyclerView"
+        app:umanoScrollableView="@+id/recyclerView"
         app:umanoShadowHeight="4dp">
 
         <FrameLayout
@@ -76,7 +76,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="40dp"
             android:layout_marginStart="24dp"
             android:layout_marginTop="48dp"
             android:layout_marginEnd="24dp"
@@ -94,15 +94,15 @@
                     android:id="@+id/rb_stname"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="상호명"
-                    android:fontFamily="sans-serif-black"/>
+                    android:fontFamily="sans-serif-black"
+                    android:text="상호명" />
 
                 <RadioButton
                     android:id="@+id/rb_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="주소"
-                    android:fontFamily="sans-serif-black"/>
+                    android:fontFamily="sans-serif-black"
+                    android:text="주소" />
             </RadioGroup>
         </RelativeLayout>
 

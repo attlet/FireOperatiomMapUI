@@ -3,6 +3,7 @@ package com.example.fireoperationmap;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.inputmethod.EditorInfoCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -54,8 +55,19 @@ public class MainActivity extends AppCompatActivity {
         assert actionBar != null;
         actionBar.hide();
 
-        slidingUpPanelLayout = findViewById(R.id.slidingLayout);
         searchField = findViewById(R.id.searchField);
+        slidingUpPanelLayout = findViewById(R.id.slidingLayout);
+        slidingUpPanelLayout.setAnchorPoint(0.4f);
+        slidingUpPanelLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
+            @Override
+            public void onPanelSlide(View panel, float slideOffset) {}
+
+            @Override
+            public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
+                if (newState == SlidingUpPanelLayout.PanelState.ANCHORED)
+                    searchField.clearFocus();
+            }
+        });
 
         createMapView();
         initializeAdapterAndRecyclerView();
@@ -180,18 +192,17 @@ public class MainActivity extends AppCompatActivity {
             if (checkedId == R.id.rb_stname) {
                 Toast.makeText(MainActivity.this, "상호명으로 검색", Toast.LENGTH_SHORT).show();
                 adapter.setSearchState("st_name");
+                adapter.getFilter().filter(searchField.getText());
             }
             else if (checkedId == R.id.rb_address) {
                 Toast.makeText(MainActivity.this, "주소지로 검색", Toast.LENGTH_SHORT).show();
                 adapter.setSearchState("address");
+                adapter.getFilter().filter(searchField.getText());
             }
         });
 
         searchButton.setOnClickListener(view -> {
             if (searchField.hasFocus()) {
-                InputMethodManager manager = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
-                manager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-                slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
                 searchField.clearFocus();
             }
         });
@@ -200,16 +211,18 @@ public class MainActivity extends AppCompatActivity {
         searchField.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {
                 searchField.setText("");
-                adapter.clearRecyclerView();
-                //slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+                adapter.getFilter().filter("");
+                slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+            }
+            else {
+                InputMethodManager manager = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                manager.hideSoftInputFromWindow(searchField.getWindowToken(), 0);
+                slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
             }
         });
 
         searchField.setOnEditorActionListener((view, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                InputMethodManager manager = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
-                manager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-                slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
                 searchField.clearFocus();
                 return true;
             }

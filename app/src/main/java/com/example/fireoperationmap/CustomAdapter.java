@@ -147,8 +147,8 @@ public class CustomAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             detailedViewHolder.address.setText(currentItem.getTagAddress());
             detailedViewHolder.floor.setText(currentItem.getTagFloor());
             detailedViewHolder.st_name.setText(currentItem.getTagSt_name());
-            detailedViewHolder.structure.setText(currentItem.getTagStructure());
             detailedViewHolder.st_type.setText(currentItem.getTagSt_type());
+            detailedViewHolder.structure.setText(currentItem.getTagStructure());
             detailedViewHolder.fire_plug.setText(currentItem.getTagFire_plug());
         }
     }
