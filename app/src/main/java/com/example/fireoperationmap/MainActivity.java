@@ -210,6 +210,7 @@ public class MainActivity extends AppCompatActivity {
         //입력중일때 추천검색어 고민중
         searchField.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {
+                adapter.clearRecyclerView();
                 searchField.setText("");
                 adapter.getFilter().filter("");
                 slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
