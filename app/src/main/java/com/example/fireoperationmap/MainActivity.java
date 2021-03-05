@@ -210,6 +210,8 @@ public class MainActivity extends AppCompatActivity {
         //입력중일때 추천검색어 고민중
         searchField.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {
+                ImageView icon = findViewById(R.id.pin);
+                icon.setVisibility(View.INVISIBLE);
                 adapter.clearRecyclerView();
                 searchField.setText("");
                 slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
