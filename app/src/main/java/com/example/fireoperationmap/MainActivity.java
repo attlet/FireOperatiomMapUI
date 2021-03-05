@@ -212,7 +212,6 @@ public class MainActivity extends AppCompatActivity {
             if (hasFocus) {
                 adapter.clearRecyclerView();
                 searchField.setText("");
-                adapter.getFilter().filter("");
                 slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
             }
             else {
@@ -237,13 +236,10 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                /* 검색창이 비어있는 상태에서 모든 결과를 띄울것인가 말것인가
                 if (s.toString().trim().equals("")) {
                     adapter.clearRecyclerView();
                 }
                 else adapter.getFilter().filter(s);
-                */
-                adapter.getFilter().filter(s);
             }
 
             @Override
