@@ -41,10 +41,7 @@ public class CustomAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             List<User> filteredList = new ArrayList<>();
-            if(constraint == null|| constraint.length() == 0){
-                filteredList.addAll(userListFull);
-            }
-            else{
+            if (constraint != null && !constraint.toString().trim().equals("")) {
                 String pattern = constraint.toString().toLowerCase().trim();
                 for(User item : userListFull) {
                     if (searchState == SearchType.ST_NAME && item.getSt_name().toLowerCase().contains(pattern)) {

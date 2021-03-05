@@ -236,10 +236,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.toString().trim().equals("")) {
-                    adapter.clearRecyclerView();
-                }
-                else adapter.getFilter().filter(s);
+                adapter.getFilter().filter(s);
             }
 
             @Override
