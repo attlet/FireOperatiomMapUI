@@ -1,29 +1,21 @@
 package com.example.fireoperationmap;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.inputmethod.EditorInfoCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.graphics.Insets;
 import android.graphics.Matrix;
-import android.graphics.Point;
 import android.graphics.PointF;
-import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
-import android.renderscript.Matrix3f;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.Display;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowInsets;
 import android.view.WindowMetrics;
 import android.view.inputmethod.EditorInfo;
@@ -31,12 +23,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.github.chrisbanes.photoview.PhotoView;
-import com.github.chrisbanes.photoview.PhotoViewAttacher;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -155,21 +145,15 @@ public class MainActivity extends AppCompatActivity {
             float[] values = new float[9];
             photoView.getSuppMatrix(suppMatrix);
             suppMatrix.getValues(values);
-            //Log.d("suppMatrix :", "\n" + values[0] + " " + values[1] + " " + values[2] + "\n" + values[3] + " " + values[4] + " " + values[5] + "\n" + values[6] + " " + values[7] + " " + values[8] + "\n");
 
             PointF middleRatio = new PointF(0.5f, (1.0f - slidingPanelAnchorPoint) / 2.0f);
             PointF middleP = new PointF(getScreenWidth(this) * middleRatio.x, getScreenHeight(this) * middleRatio.y);
 
             values[2] += middleP.x - (photoView.getDisplayRect().left + (photoView.getDisplayRect().right - photoView.getDisplayRect().left) * curRatio.x);
-            values[5] += middleP.y + (photoView.getDisplayRect().top + (photoView.getDisplayRect().top - photoView.getDisplayRect().bottom) * curRatio.y);
-            //Log.d("suppMatrix after :", "\n" + values[0] + " " + values[1] + " " + values[2] + "\n" + values[3] + " " + values[4] + " " + values[5] + "\n" + values[6] + " " + values[7] + " " + values[8] + "\n");
+            values[5] += middleP.y - (photoView.getDisplayRect().top + (photoView.getDisplayRect().bottom - photoView.getDisplayRect().top) * curRatio.y);
 
             suppMatrix.setValues(values);
             photoView.setSuppMatrix(suppMatrix);
-
-            //photoView.getSuppMatrix(suppMatrix);
-            //suppMatrix.getValues(values);
-            //Log.d("suppMatrix result :", "\n" + values[0] + " " + values[1] + " " + values[2] + "\n" + values[3] + " " + values[4] + " " + values[5] + "\n" + values[6] + " " + values[7] + " " + values[8] + "\n");
         });
     }
 
