@@ -46,10 +46,12 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 .requestEmail()
                 .build();
 
+
         googleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, googleSignInOptions)
                 .build();
+
 
         auth = FirebaseAuth.getInstance(); // 파이어베이스 인증 객체 초기화.
 
