@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private Map<Integer, Map<Integer, Place>> sectionData = new HashMap<>();
     private final float slidingPanelAnchorPoint = 0.4f;
     private PointF curRatio = new PointF(0.0f, 0.0f);
+    private long backBtnTime = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +75,23 @@ public class MainActivity extends AppCompatActivity {
         createMapView();
         initializeAdapterAndRecyclerView();
         createSearchView();
+    }
+
+    @Override
+    public void onBackPressed() { //뒤로가기 두 번 눌를 시 종료
+        long curTime = System.currentTimeMillis();
+        long gaptime = curTime - backBtnTime;
+
+        if(0 <= gaptime && 2000 >= gaptime){
+            moveTaskToBack(true);						// 태스크를 백그라운드로 이동
+            finishAndRemoveTask();
+            android.os.Process.killProcess(android.os.Process.myPid());
+        }
+        else{
+            backBtnTime = curTime;
+            Toast.makeText(this, "한번 더 누르면 종료됩니다", Toast.LENGTH_SHORT).show();
+        }
+        //super.onBackPressed();
     }
 
     private void initializeAdapterAndRecyclerView() {
