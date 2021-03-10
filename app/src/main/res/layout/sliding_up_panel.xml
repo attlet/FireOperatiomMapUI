@@ -23,53 +23,58 @@
             android:layout_marginTop="5dp"
             android:background="@drawable/round_border" />
 
-        <TextView
-            android:id="@+id/icon_text"
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/fireplug_border"
+            android:paddingStart="5dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="5dp"
+            android:paddingBottom="5dp">
 
-            android:layout_marginLeft="3dp"
-            android:drawableTop="@drawable/fireplug"
-            android:fontFamily="sans-serif-black"
-            android:text="소화전"
-            android:textColor="#000000"
-            android:textSize="8sp" />
+            <TextView
+                android:id="@+id/icon_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
 
-        <TextView
-            android:id="@+id/icon_text2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="5dp"
-            android:layout_toRightOf="@id/icon_text"
-            android:drawableTop="@drawable/fireplug2"
-            android:fontFamily="sans-serif-black"
-            android:text="지하 소화전"
-            android:textColor="#000000"
-            android:textSize="8sp" />
+                android:drawableTop="@drawable/fireplug"
+                android:fontFamily="sans-serif-black"
+                android:text="소화전"
+                android:textColor="#000000"
+                android:textSize="8sp" />
 
-        <TextView
-            android:id="@+id/icon_text3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="5dp"
-            android:layout_toRightOf="@id/icon_text2"
-            android:drawableTop="@drawable/blue_square"
-            android:fontFamily="sans-serif-black"
-            android:text="소화전함"
-            android:textColor="#000000"
-            android:textSize="8sp" />
+            <TextView
+                android:id="@+id/icon_text2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="40dp"
+                android:layout_toRightOf="@id/icon_text"
+                android:drawableTop="@drawable/fireplug2"
+                android:fontFamily="sans-serif-black"
+                android:text="소화전(+함)"
+                android:textColor="#000000"
+                android:textSize="8sp" />
+
+        </RelativeLayout>
+
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="280dp"
             android:layout_marginTop="7dp"
-
             android:layout_marginRight="15dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="@drawable/fireplug_border"
+            android:paddingStart="5dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="5dp"
+            android:paddingBottom="5dp"
+            >
 
 
             <TextView
