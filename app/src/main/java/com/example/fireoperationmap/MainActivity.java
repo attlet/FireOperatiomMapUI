@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Insets;
 import android.graphics.Matrix;
 import android.graphics.PointF;
@@ -20,6 +21,7 @@ import android.view.WindowInsets;
 import android.view.WindowMetrics;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -48,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
     private final float slidingPanelAnchorPoint = 0.4f;
     private PointF curRatio = new PointF(0.0f, 0.0f);
     private long backBtnTime = 0;
+    private ImageButton button[] = new ImageButton[8];
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +67,8 @@ public class MainActivity extends AppCompatActivity {
         slidingUpPanelLayout.setAnchorPoint(slidingPanelAnchorPoint);
         slidingUpPanelLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
             @Override
-            public void onPanelSlide(View panel, float slideOffset) {}
+            public void onPanelSlide(View panel, float slideOffset) {
+            }
 
             @Override
             public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
@@ -82,12 +87,11 @@ public class MainActivity extends AppCompatActivity {
         long curTime = System.currentTimeMillis();
         long gaptime = curTime - backBtnTime;
 
-        if(0 <= gaptime && 2000 >= gaptime){
-            moveTaskToBack(true);						// 태스크를 백그라운드로 이동
+        if (0 <= gaptime && 2000 >= gaptime) {
+            moveTaskToBack(true);                        // 태스크를 백그라운드로 이동
             finishAndRemoveTask();
             android.os.Process.killProcess(android.os.Process.myPid());
-        }
-        else{
+        } else {
             backBtnTime = curTime;
             Toast.makeText(this, "한번 더 누르면 종료됩니다", Toast.LENGTH_SHORT).show();
         }
@@ -116,14 +120,15 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {}
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
         });
 
         sectionRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 sectionData = new HashMap<>();
-                for(DataSnapshot sectionData : snapshot.getChildren()) {
+                for (DataSnapshot sectionData : snapshot.getChildren()) {
                     int sectionKey = Integer.parseInt(sectionData.getKey().split("_")[1]);
                     if (!MainActivity.this.sectionData.containsKey(sectionKey)) {
                         MainActivity.this.sectionData.put(sectionKey, new HashMap<>());
@@ -137,7 +142,8 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {}
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
         });
 
         //아이템 클릭시 이벤트 설정
@@ -158,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
             ImageView icon = findViewById(R.id.pin);
             icon.setVisibility(View.VISIBLE);
 
-            photoView.setScale(photoView.getMaximumScale(), 0.0f, 0.0f , false);
+            photoView.setScale(photoView.getMaximumScale(), 0.0f, 0.0f, false);
             Matrix suppMatrix = new Matrix();
             float[] values = new float[9];
             photoView.getSuppMatrix(suppMatrix);
@@ -212,14 +218,12 @@ public class MainActivity extends AppCompatActivity {
                 searchField.setHint("상호명을 입력하세요.");
                 adapter.setSearchState("st_name");
                 adapter.getFilter().filter(searchField.getText());
-            }
-            else if (checkedId == R.id.rb_address) {
+            } else if (checkedId == R.id.rb_address) {
                 Toast.makeText(MainActivity.this, "주소지로 검색", Toast.LENGTH_SHORT).show();
                 searchField.setHint("주소지를 입력하세요.");
                 adapter.setSearchState("address");
                 adapter.getFilter().filter(searchField.getText());
-            }
-            else if (checkedId == R.id.rb_id) {
+            } else if (checkedId == R.id.rb_id) {
                 Toast.makeText(MainActivity.this, "건물번호로 검색", Toast.LENGTH_SHORT).show();
                 searchField.setHint("건물번호를 입력하세요. (예시: 1-3-2)");
                 adapter.setSearchState("id");
@@ -241,9 +245,8 @@ public class MainActivity extends AppCompatActivity {
                 adapter.clearRecyclerView();
                 searchField.setText("");
                 slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
-            }
-            else {
-                InputMethodManager manager = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+            } else {
+                InputMethodManager manager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
                 manager.hideSoftInputFromWindow(searchField.getWindowToken(), 0);
                 slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
             }
@@ -273,12 +276,37 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void createMapView(){
+    private void createMapView() {
         photoView = findViewById(R.id.photo_view);
-        photoView.setImageResource(R.drawable.operation_map);
-
         //줌 비율 설정
         photoView.setMaximumScale(7.0f);
+        Integer[] btn_id = {R.id.button1, R.id.button2, R.id.button3, R.id.button4, R.id.button5, R.id.button6, R.id.button7, R.id.button8};
+        photoView.setImageResource(R.drawable.operation_map);
+        for (int i = 0; i < 8; i++) {
+            button[i] = findViewById(btn_id[i]);
+        }
+
+
+        View.OnClickListener btnclicklistener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (int i = 0; i < 8; i++) {
+                    if (v.getId() == button[i].getId()) {
+                        Intent intent = new Intent(getApplicationContext(), Arcadepop.class);
+                        intent.putExtra("Enter_num", "1");
+                        intent.putExtra("Address", "청주시상당구상당로3번길2");
+                        intent.putExtra("Detail_info", "가덕순대 우측 옥상입구, 2층 비밀번호 2589");  //나중에 수정해야됨. 이건 예시.
+                        startActivityForResult(intent, 1);
+                    }
+                }
+            }
+        };
+
+        for (int i = 0; i < 8; i++) {
+            button[i].setOnClickListener(btnclicklistener);
+
+        }
+
 
         photoView.setOnMatrixChangeListener(rect -> {
             ImageView icon = findViewById(R.id.pin);
@@ -289,4 +317,6 @@ public class MainActivity extends AppCompatActivity {
             icon.setY((rect.top + ((rect.bottom - rect.top) * curRatio.y) - pinHeight));
         });
     }
+
+
 }

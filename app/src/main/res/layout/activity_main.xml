@@ -26,6 +26,61 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
+            <ImageButton
+                android:id="@+id/button1"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/arcadepin1" />
+
+            <ImageButton
+                android:id="@+id/button2"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/arcadepin2" />
+
+            <ImageButton
+                android:id="@+id/button3"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/arcadepin3" />
+
+            <ImageButton
+                android:id="@+id/button4"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/arcadepin4" />
+
+            <ImageButton
+                android:id="@+id/button5"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/arcadepin5" />
+
+            <ImageButton
+                android:id="@+id/button6"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/arcadepin6" />
+
+            <ImageButton
+                android:id="@+id/button7"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/arcadepin7" />
+
+            <ImageButton
+                android:id="@+id/button8"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/arcadepin8" />
             <ImageView
                 android:id="@+id/pin"
                 android:layout_width="40dp"
