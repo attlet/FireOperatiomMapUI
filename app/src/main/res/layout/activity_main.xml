@@ -108,8 +108,11 @@
             android:background="@drawable/relative_border"
             android:ems="10"
             android:hint=" 상호 및 주소 검색"
+            android:textSize="15dp"
             android:imeOptions="actionSearch"
             android:inputType="textPersonName"
+            android:fontFamily="@font/naver_font"
+            android:textStyle="bold"
             android:textColor="#000000"
             android:textColorHint="@color/hint_text_color"
             app:layout_constraintEnd_toEndOf="parent"
@@ -149,22 +152,25 @@
                     android:id="@+id/rb_stname"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-black"
-                    android:text="상호명" />
+                    android:fontFamily="@font/naver_font"
+                    android:text="상호명"
+                    android:textSize="15dp"/>
 
                 <RadioButton
                     android:id="@+id/rb_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-black"
-                    android:text="주소" />
+                    android:fontFamily="@font/naver_font"
+                    android:text="주소"
+                    android:textSize="15dp"/>
 
                 <RadioButton
                     android:id="@+id/rb_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-black"
-                    android:text="건물번호" />
+                    android:fontFamily="@font/naver_font"
+                    android:text="건물번호"
+                    android:textSize="15dp"/>
             </RadioGroup>
         </RelativeLayout>
 

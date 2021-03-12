@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/slidingUpPanel"
-
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="88dp"
@@ -20,13 +20,13 @@
             android:layout_height="5dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="3dp"
             android:background="@drawable/round_border" />
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/fireplug_border"
             android:paddingStart="7dp"
@@ -45,25 +45,25 @@
                 android:orientation="vertical">
 
                     <TextView
-                    android:id="@+id/textView4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/fireplug"
-                    android:fontFamily="sans-serif-black"
-                    android:text=" : 비상소화전함"
-                    android:textColor="#000000"
-                    android:textSize="7sp"
-                    android:layout_marginBottom="2dp"/>
+                        android:id="@+id/textView4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="2dp"
+                        android:drawableLeft="@drawable/fireplug"
+                        android:fontFamily="@font/naver_font"
+                        android:text=" : 비상소화전함"
+                        android:textColor="#000000"
+                        android:textSize="11dp" />
 
                     <TextView
                     android:id="@+id/textView5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/fireplug2"
-                    android:fontFamily="sans-serif-black"
+                    android:fontFamily="@font/naver_font"
                     android:text=" : 지상소화전"
                     android:textColor="#000000"
-                    android:textSize="7sp" />
+                    android:textSize="11dp" />
 
                  </LinearLayout>
 
@@ -86,10 +86,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/contol_switch"
-                    android:fontFamily="sans-serif-black"
-                    android:text=" : 옥상입구"
+                    android:fontFamily="@font/naver_font"
+                    android:text=" : 조작스위치"
                     android:textColor="#000000"
-                    android:textSize="7sp"
+                    android:textSize="11dp"
                     android:layout_marginBottom="2dp"/>
 
                 <TextView
@@ -97,11 +97,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/entrance"
-                    android:fontFamily="sans-serif-black"
-                    android:text=" : 조작스위치"
+                    android:fontFamily="@font/naver_font"
+                    android:text=" : 옥상입구"
                     android:textColor="#000000"
-
-                    android:textSize="7sp" />
+                    android:textSize="11dp" />
 
             </LinearLayout>
 
@@ -116,8 +115,8 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="280dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginStart="260dp"
+            android:layout_marginTop="7dp"
             android:layout_marginRight="15dp"
             android:orientation="vertical"
             android:background="@drawable/fireplug_border"
@@ -133,30 +132,30 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/long_red_square"
-                android:fontFamily="sans-serif-black"
+                android:fontFamily="@font/naver_font"
                 android:text=" : [협소구간] 중앙10호"
                 android:textColor="#000000"
-                android:textSize="7sp" />
+                android:textSize="11dp" />
 
             <TextView
                 android:id="@+id/textView2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/long_blue_square"
-                android:fontFamily="sans-serif-black"
+                android:fontFamily="@font/naver_font"
                 android:text=" : 중형펌프 진입 가능"
                 android:textColor="#000000"
-                android:textSize="7sp" />
+                android:textSize="11dp" />
 
             <TextView
                 android:id="@+id/textView3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/long_gray_square"
-                android:fontFamily="sans-serif-black"
+                android:fontFamily="@font/naver_font"
                 android:text=" : 아케이드 설치 구간"
                 android:textColor="#000000"
-                android:textSize="7sp" />
+                android:textSize="11dp" />
         </LinearLayout>
 
 
