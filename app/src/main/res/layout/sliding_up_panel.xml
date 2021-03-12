@@ -26,54 +26,105 @@
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/fireplug_border"
-            android:paddingStart="5dp"
-            android:paddingTop="5dp"
-            android:paddingEnd="5dp"
-            android:paddingBottom="5dp">
+            android:paddingStart="7dp"
+            android:paddingTop="7dp"
+            android:paddingEnd="7dp"
+            android:paddingBottom="7dp">
 
-            <TextView
-                android:id="@+id/icon_text"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
+                android:orientation="horizontal">
 
-                android:drawableTop="@drawable/fireplug"
-                android:fontFamily="sans-serif-black"
-                android:text="소화전"
-                android:textColor="#000000"
-                android:textSize="8sp" />
-
-            <TextView
-                android:id="@+id/icon_text2"
+                <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="40dp"
-                android:layout_toRightOf="@id/icon_text"
-                android:drawableTop="@drawable/fireplug2"
-                android:fontFamily="sans-serif-black"
-                android:text="소화전(+함)"
-                android:textColor="#000000"
-                android:textSize="8sp" />
+                android:orientation="vertical">
+
+                    <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/fireplug"
+                    android:fontFamily="sans-serif-black"
+                    android:text=" : 비상소화전함"
+                    android:textColor="#000000"
+                    android:textSize="7sp"
+                    android:layout_marginBottom="2dp"/>
+
+                    <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/fireplug2"
+                    android:fontFamily="sans-serif-black"
+                    android:text=" : 지상소화전"
+                    android:textColor="#000000"
+                    android:textSize="7sp" />
+
+                 </LinearLayout>
+
+                <View
+                    android:id="@+id/view2"
+                    android:layout_width="2dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:background="#B1BCBE" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/contol_switch"
+                    android:fontFamily="sans-serif-black"
+                    android:text=" : 옥상입구"
+                    android:textColor="#000000"
+                    android:textSize="7sp"
+                    android:layout_marginBottom="2dp"/>
+
+                <TextView
+                    android:id="@+id/textView7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/entrance"
+                    android:fontFamily="sans-serif-black"
+                    android:text=" : 조작스위치"
+                    android:textColor="#000000"
+
+                    android:textSize="7sp" />
+
+            </LinearLayout>
+
+            </LinearLayout>
+
 
         </RelativeLayout>
+
+
 
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="280dp"
-            android:layout_marginTop="7dp"
+            android:layout_marginTop="10dp"
             android:layout_marginRight="15dp"
             android:orientation="vertical"
             android:background="@drawable/fireplug_border"
-            android:paddingStart="5dp"
-            android:paddingTop="5dp"
-            android:paddingEnd="5dp"
-            android:paddingBottom="5dp"
+            android:paddingStart="7dp"
+            android:paddingTop="7dp"
+            android:paddingEnd="7dp"
+            android:paddingBottom="7dp"
             >
 
 
