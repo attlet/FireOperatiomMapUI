@@ -25,7 +25,7 @@ public class CustomAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private List<User> userListFull = new ArrayList<>();
     private CustomAdapter.OnItemClickLister listener;
     private enum SearchType {
-        ST_NAME, ADDRESS
+        ST_NAME, ADDRESS, ID
     }
     private enum ViewType {
         SIMPLE, DETAILED
@@ -48,6 +48,9 @@ public class CustomAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         filteredList.add(item);
                     }
                     else if (searchState == SearchType.ADDRESS && item.getAddress().toLowerCase().contains(pattern)) {
+                        filteredList.add(item);
+                    }
+                    else if (searchState == SearchType.ID && item.getId().toLowerCase().trim().equals(pattern)) {
                         filteredList.add(item);
                     }
                 }
@@ -182,5 +185,6 @@ public class CustomAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public void setSearchState(String searchState) {
         if (searchState.equals("st_name")) this.searchState = SearchType.ST_NAME;
         else if (searchState.equals("address")) this.searchState = SearchType.ADDRESS;
+        else if (searchState.equals("id")) this.searchState = SearchType.ID;
     }
 }

@@ -209,12 +209,20 @@ public class MainActivity extends AppCompatActivity {
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == R.id.rb_stname) {
                 Toast.makeText(MainActivity.this, "상호명으로 검색", Toast.LENGTH_SHORT).show();
+                searchField.setHint("상호명을 입력하세요.");
                 adapter.setSearchState("st_name");
                 adapter.getFilter().filter(searchField.getText());
             }
             else if (checkedId == R.id.rb_address) {
                 Toast.makeText(MainActivity.this, "주소지로 검색", Toast.LENGTH_SHORT).show();
+                searchField.setHint("주소지를 입력하세요.");
                 adapter.setSearchState("address");
+                adapter.getFilter().filter(searchField.getText());
+            }
+            else if (checkedId == R.id.rb_id) {
+                Toast.makeText(MainActivity.this, "건물번호로 검색", Toast.LENGTH_SHORT).show();
+                searchField.setHint("건물번호를 입력하세요. (예시: 1-3-2)");
+                adapter.setSearchState("id");
                 adapter.getFilter().filter(searchField.getText());
             }
         });
