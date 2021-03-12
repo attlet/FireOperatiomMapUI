@@ -172,6 +172,15 @@ public class CustomAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         return userList.get(position);
     }
 
+    public User getItem(String id) {
+        id = id.trim();
+        for (User user : userListFull) {
+            if (user.getId().trim().equals(id))
+                return user;
+        }
+        return null;
+    }
+
     public void addUser(User user) {
         this.userListFull.add(user);
     }

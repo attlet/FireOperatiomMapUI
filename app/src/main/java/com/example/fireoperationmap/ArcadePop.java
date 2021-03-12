@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
-public class Arcadepop extends Activity {
+public class ArcadePop extends Activity {
     private TextView enter_num, address, detail_info;
     private ImageView imageView;
     private Button finish_btn;
@@ -36,7 +36,7 @@ public class Arcadepop extends Activity {
         address.setText("주소: " + intent.getStringExtra("Address"));
         detail_info.setText("세부사항: " + intent.getStringExtra("Detail_info"));
 
-        imageView.setImageResource(arcadepin_name[Integer.parseInt(intent.getStringExtra("Enter_num"))] - 1);
+        imageView.setImageResource(arcadepin_name[Integer.parseInt(intent.getStringExtra("Enter_num")) - 1]);
 
     }
     public void mOnClose(View v){
@@ -49,8 +49,5 @@ public class Arcadepop extends Activity {
             return false;
         }
         return true;
-
-
-
     }
 }
