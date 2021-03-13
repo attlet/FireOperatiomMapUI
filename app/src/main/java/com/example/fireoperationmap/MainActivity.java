@@ -7,9 +7,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Insets;
 import android.graphics.Matrix;
 import android.graphics.PointF;
+import android.graphics.RectF;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
@@ -21,9 +23,11 @@ import android.view.WindowMetrics;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.github.chrisbanes.photoview.PhotoView;
@@ -34,7 +38,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
@@ -45,9 +52,11 @@ public class MainActivity extends AppCompatActivity {
     private PhotoView photoView;
     EditText searchField;
     private Map<Integer, Map<Integer, Place>> sectionData = new HashMap<>();
+    private List<Arcade> arcadeList = new ArrayList<>();
     private final float slidingPanelAnchorPoint = 0.4f;
-    private PointF curRatio = new PointF(0.0f, 0.0f);
+    private final PointF curRatio = new PointF(0.0f, 0.0f);
     private long backBtnTime = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +72,8 @@ public class MainActivity extends AppCompatActivity {
         slidingUpPanelLayout.setAnchorPoint(slidingPanelAnchorPoint);
         slidingUpPanelLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
             @Override
-            public void onPanelSlide(View panel, float slideOffset) {}
+            public void onPanelSlide(View panel, float slideOffset) {
+            }
 
             @Override
             public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
@@ -82,12 +92,11 @@ public class MainActivity extends AppCompatActivity {
         long curTime = System.currentTimeMillis();
         long gaptime = curTime - backBtnTime;
 
-        if(0 <= gaptime && 2000 >= gaptime){
-            moveTaskToBack(true);						// 태스크를 백그라운드로 이동
+        if (0 <= gaptime && 2000 >= gaptime) {
+            moveTaskToBack(true);                        // 태스크를 백그라운드로 이동
             finishAndRemoveTask();
             android.os.Process.killProcess(android.os.Process.myPid());
-        }
-        else{
+        } else {
             backBtnTime = curTime;
             Toast.makeText(this, "한번 더 누르면 종료됩니다", Toast.LENGTH_SHORT).show();
         }
@@ -97,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
     private void initializeAdapterAndRecyclerView() {
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("User");
         DatabaseReference sectionRef = FirebaseDatabase.getInstance().getReference().child("Section");
+        DatabaseReference arcadeRef = FirebaseDatabase.getInstance().getReference().child("Arcade");
         adapter = new CustomAdapter();
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -116,14 +126,15 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {}
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
         });
 
         sectionRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 sectionData = new HashMap<>();
-                for(DataSnapshot sectionData : snapshot.getChildren()) {
+                for (DataSnapshot sectionData : snapshot.getChildren()) {
                     int sectionKey = Integer.parseInt(sectionData.getKey().split("_")[1]);
                     if (!MainActivity.this.sectionData.containsKey(sectionKey)) {
                         MainActivity.this.sectionData.put(sectionKey, new HashMap<>());
@@ -137,7 +148,25 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {}
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+
+        arcadeRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                arcadeList = new ArrayList<>();
+                for (DataSnapshot data : snapshot.getChildren()) {
+                    Arcade arcade = data.getValue(Arcade.class);
+                    arcadeList.add(arcade);
+                }
+                Collections.sort(arcadeList);
+                updateArcadeButton();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
         });
 
         //아이템 클릭시 이벤트 설정
@@ -158,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
             ImageView icon = findViewById(R.id.pin);
             icon.setVisibility(View.VISIBLE);
 
-            photoView.setScale(photoView.getMaximumScale(), 0.0f, 0.0f , false);
+            photoView.setScale(photoView.getMaximumScale(), 0.0f, 0.0f, false);
             Matrix suppMatrix = new Matrix();
             float[] values = new float[9];
             photoView.getSuppMatrix(suppMatrix);
@@ -212,14 +241,12 @@ public class MainActivity extends AppCompatActivity {
                 searchField.setHint("상호명을 입력하세요.");
                 adapter.setSearchState("st_name");
                 adapter.getFilter().filter(searchField.getText());
-            }
-            else if (checkedId == R.id.rb_address) {
+            } else if (checkedId == R.id.rb_address) {
                 Toast.makeText(MainActivity.this, "주소지로 검색", Toast.LENGTH_SHORT).show();
                 searchField.setHint("주소지를 입력하세요.");
                 adapter.setSearchState("address");
                 adapter.getFilter().filter(searchField.getText());
-            }
-            else if (checkedId == R.id.rb_id) {
+            } else if (checkedId == R.id.rb_id) {
                 Toast.makeText(MainActivity.this, "건물번호로 검색", Toast.LENGTH_SHORT).show();
                 searchField.setHint("건물번호를 입력하세요. (예시: 1-3-2)");
                 adapter.setSearchState("id");
@@ -241,9 +268,8 @@ public class MainActivity extends AppCompatActivity {
                 adapter.clearRecyclerView();
                 searchField.setText("");
                 slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
-            }
-            else {
-                InputMethodManager manager = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+            } else {
+                InputMethodManager manager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
                 manager.hideSoftInputFromWindow(searchField.getWindowToken(), 0);
                 slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
             }
@@ -273,12 +299,57 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void createMapView(){
+    private void createMapView() {
         photoView = findViewById(R.id.photo_view);
-        photoView.setImageResource(R.drawable.operation_map);
-
         //줌 비율 설정
         photoView.setMaximumScale(7.0f);
+        photoView.setImageResource(R.drawable.operation_map);
+    }
+
+    private void updateArcadeButton() {
+        //임시 개수
+        ImageButton[] button = new ImageButton[arcadeList.size()];
+        FrameLayout mapView = findViewById(R.id.mapView);
+        final int[] arcadeImgList = new int[]{R.drawable.arcadepin1, R.drawable.arcadepin2, R.drawable.arcadepin3, R.drawable.arcadepin4,
+                R.drawable.arcadepin5, R.drawable.arcadepin6, R.drawable.arcadepin7, R.drawable.arcadepin8};
+
+        final int buttonSize = (int) (40.0f * getResources().getDisplayMetrics().density + 0.5f);
+
+        //버튼 위치 임시 설정
+        PointF[] btnPos = new PointF[arcadeList.size()];
+        for (int i = 0; i < arcadeList.size(); i++) {
+            btnPos[i] = new PointF();
+            btnPos[i].x = arcadeList.get(i).getX();
+            btnPos[i].y = arcadeList.get(i).getY();
+        }
+
+        for (int i = 0; i < arcadeList.size(); i++) {
+            button[i] = new ImageButton(this);
+            button[i].setBackgroundResource(arcadeImgList[i]);
+            RelativeLayout.LayoutParams pm = new RelativeLayout.LayoutParams(buttonSize, buttonSize);
+            pm.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+
+            button[i].setLayoutParams(pm);
+            RectF rect = photoView.getDisplayRect();
+            button[i].setX((rect.left + ((rect.right - rect.left) * btnPos[i].x) - buttonSize / 2.0f));
+            button[i].setY((rect.top + ((rect.bottom - rect.top) * btnPos[i].y) - buttonSize / 2.0f));
+            mapView.addView(button[i]);
+        }
+
+        for (int i = 0; i < arcadeList.size(); i++) {
+            int finalI = i;
+            button[i].setOnClickListener(v -> {
+                //검색 느림 추후 개선
+                String arcadeId = arcadeList.get(finalI).getId().trim();
+                String address = adapter.getItem(arcadeId).getAddress();
+
+                Intent intent = new Intent(getApplicationContext(), ArcadePop.class);
+                intent.putExtra("Enter_num", Integer.toString(arcadeList.get(finalI).getNum()));
+                intent.putExtra("Address", address);
+                intent.putExtra("Detail_info", arcadeList.get(finalI).getDetail());
+                startActivityForResult(intent, 1);
+            });
+        }
 
         photoView.setOnMatrixChangeListener(rect -> {
             ImageView icon = findViewById(R.id.pin);
@@ -287,6 +358,11 @@ public class MainActivity extends AppCompatActivity {
 
             icon.setX((rect.left + ((rect.right - rect.left) * curRatio.x) - pinWidth / 2));
             icon.setY((rect.top + ((rect.bottom - rect.top) * curRatio.y) - pinHeight));
+
+            for (int i = 0; i < arcadeList.size(); i++) {
+                button[i].setX((rect.left + ((rect.right - rect.left) * btnPos[i].x) - buttonSize / 2.0f));
+                button[i].setY((rect.top + ((rect.bottom - rect.top) * btnPos[i].y) - buttonSize / 2.0f));
+            }
         });
     }
 }
