@@ -22,14 +22,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TextView"
-                android:fontFamily="sans-serif-black"/>
+                android:textSize="15dp"
+                android:fontFamily="@font/naver_font"
+                android:textColor="#000" />
 
             <TextView
                 android:id="@+id/id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TextView"
-                android:fontFamily="sans-serif-black"/>
+                android:textSize="15dp"
+                android:fontFamily="@font/naver_font"
+                android:textColor="#000" />
         </TableRow>
 
         <TableRow
@@ -42,7 +46,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TextView"
-                android:fontFamily="sans-serif-black"/>
+                android:textSize="15dp"
+                android:fontFamily="@font/naver_font"
+                android:textColor="#000" />
         </TableRow>
 
         <TableRow
@@ -54,14 +60,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TextView"
-                android:fontFamily="sans-serif-black"/>
+                android:textSize="15dp"
+                android:fontFamily="@font/naver_font"
+                android:textColor="#000" />
 
             <TextView
                 android:id="@+id/st_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TextView"
-                android:fontFamily="sans-serif-black"/>
+                android:textSize="15dp"
+                android:fontFamily="@font/naver_font"
+                android:textColor="#000" />
         </TableRow>
 
         <TableRow
@@ -73,7 +83,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TextView"
-                android:fontFamily="sans-serif-black"/>
+                android:textSize="15dp"
+                android:fontFamily="@font/naver_font"
+                android:textColor="#000" />
 
 
         </TableRow>
@@ -87,7 +99,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TextView"
-                android:fontFamily="sans-serif-black"/>
+                android:textSize="15dp"
+                android:fontFamily="@font/naver_font"
+                android:textColor="#000" />
         </TableRow>
 
         <ImageView

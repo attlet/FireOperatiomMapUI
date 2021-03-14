@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.graphics.Insets;
 import android.graphics.Matrix;
 import android.graphics.PointF;
+import android.graphics.RectF;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
@@ -22,11 +23,12 @@ import android.view.WindowInsets;
 import android.view.WindowMetrics;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.github.chrisbanes.photoview.PhotoView;
@@ -37,7 +39,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
@@ -48,10 +53,10 @@ public class MainActivity extends AppCompatActivity {
     private PhotoView photoView;
     EditText searchField;
     private Map<Integer, Map<Integer, Place>> sectionData = new HashMap<>();
+    private List<Arcade> arcadeList = new ArrayList<>();
     private final float slidingPanelAnchorPoint = 0.4f;
-    private PointF curRatio = new PointF(0.0f, 0.0f);
+    private final PointF curRatio = new PointF(0.0f, 0.0f);
     private long backBtnTime = 0;
-    private ImageButton button[] = new ImageButton[8];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
     private void initializeAdapterAndRecyclerView() {
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("User");
         DatabaseReference sectionRef = FirebaseDatabase.getInstance().getReference().child("Section");
+        DatabaseReference arcadeRef = FirebaseDatabase.getInstance().getReference().child("Arcade");
         adapter = new CustomAdapter();
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -140,6 +146,23 @@ public class MainActivity extends AppCompatActivity {
                         MainActivity.this.sectionData.get(sectionKey).put(placeKey, place);
                     }
                 }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+
+        arcadeRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                arcadeList = new ArrayList<>();
+                for (DataSnapshot data : snapshot.getChildren()) {
+                    Arcade arcade = data.getValue(Arcade.class);
+                    arcadeList.add(arcade);
+                }
+                Collections.sort(arcadeList);
+                updateArcadeButton();
             }
 
             @Override
@@ -282,54 +305,68 @@ public class MainActivity extends AppCompatActivity {
         photoView = findViewById(R.id.photo_view);
         //줌 비율 설정
         photoView.setMaximumScale(7.0f);
-        Integer[] btn_id = {R.id.button1, R.id.button2, R.id.button3, R.id.button4, R.id.button5, R.id.button6, R.id.button7, R.id.button8};
         photoView.setImageResource(R.drawable.operation_map);
-        for (int i = 0; i < 8; i++) {
-            button[i] = findViewById(btn_id[i]);
+    }
+
+    private void updateArcadeButton() {
+        //임시 개수
+        ImageButton[] button = new ImageButton[arcadeList.size()];
+        FrameLayout mapView = findViewById(R.id.mapView);
+        final int[] arcadeImgList = new int[]{R.drawable.arcadepin1, R.drawable.arcadepin2, R.drawable.arcadepin3, R.drawable.arcadepin4,
+                R.drawable.arcadepin5, R.drawable.arcadepin6, R.drawable.arcadepin7, R.drawable.arcadepin8};
+
+        final int buttonSize = (int) (40.0f * getResources().getDisplayMetrics().density + 0.5f);
+
+        //버튼 위치 임시 설정
+        PointF[] btnPos = new PointF[arcadeList.size()];
+        for (int i = 0; i < arcadeList.size(); i++) {
+            btnPos[i] = new PointF();
+            btnPos[i].x = arcadeList.get(i).getX();
+            btnPos[i].y = arcadeList.get(i).getY();
         }
 
+        for (int i = 0; i < arcadeList.size(); i++) {
+            button[i] = new ImageButton(this);
+            button[i].setBackgroundResource(arcadeImgList[i]);
+            RelativeLayout.LayoutParams pm = new RelativeLayout.LayoutParams(buttonSize, buttonSize);
+            pm.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
 
-        View.OnClickListener btnclicklistener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for (int i = 0; i < 8; i++) {
-                    if (v.getId() == button[i].getId()) {
-                        Intent intent = new Intent(getApplicationContext(), Arcadepop.class);
-                        intent.putExtra("Enter_num", "1");
-                        intent.putExtra("Address", "청주시상당구상당로3번길2");
-                        intent.putExtra("Detail_info", "가덕순대 우측 옥상입구, 2층 비밀번호 2589");  //나중에 수정해야됨. 이건 예시.
-                        startActivityForResult(intent, 1);
-                    }
-                }
-            }
-        };
+            button[i].setLayoutParams(pm);
+            RectF rect = photoView.getDisplayRect();
+            button[i].setX((rect.left + ((rect.right - rect.left) * btnPos[i].x) - buttonSize / 2.0f));
+            button[i].setY((rect.top + ((rect.bottom - rect.top) * btnPos[i].y) - buttonSize / 2.0f));
+            mapView.addView(button[i]);
+        }
 
-        for (int i = 0; i < 8; i++)
-            button[i].setOnClickListener(btnclicklistener);
+        for (int i = 0; i < arcadeList.size(); i++) {
+            int finalI = i;
+            button[i].setOnClickListener(v -> {
+                //검색 느림 추후 개선
+                String arcadeId = arcadeList.get(finalI).getId().trim();
+                String address = adapter.getItem(arcadeId).getAddress();
 
-        float button_width = button[0].getWidth();
-        float button_height = button[0].getHeight();
-
-
-        button[0].setX(photoView.getDisplayRect().left + ((photoView.getDisplayRect().right - photoView.getDisplayRect().left) * 0.4f) - button_width / 2);
-        button[0].setY(photoView.getDisplayRect().left + ((photoView.getDisplayRect().right - photoView.getDisplayRect().left) * 0.4f) - button_width / 2);
+                Intent intent = new Intent(getApplicationContext(), ArcadePop.class);
+                intent.putExtra("Enter_num", Integer.toString(arcadeList.get(finalI).getNum()));
+                intent.putExtra("Address", address);
+                intent.putExtra("Detail_info", arcadeList.get(finalI).getDetail());
+                startActivityForResult(intent, 1);
+            });
+        }
 
         photoView.setOnMatrixChangeListener(rect -> {
             ImageView icon = findViewById(R.id.pin);
             float pinWidth = icon.getWidth();
             float pinHeight = icon.getHeight();
 
-
             icon.setX((rect.left + ((rect.right - rect.left) * curRatio.x) - pinWidth / 2));
             icon.setY((rect.top + ((rect.bottom - rect.top) * curRatio.y) - pinHeight));
 
-            button[0].setX((rect.left + ((rect.right - rect.left) * 0.4f) - button_width / 2));
-            button[0].setY((rect.top + ((rect.bottom - rect.top) * 0.4f) - button_height / 2));
-            Log.d("test width and height", "width: " + pinWidth + ", height: " + button_height);
+            for (int i = 0; i < arcadeList.size(); i++) {
+                button[i].setX((rect.left + ((rect.right - rect.left) * btnPos[i].x) - buttonSize / 2.0f));
+                button[i].setY((rect.top + ((rect.bottom - rect.top) * btnPos[i].y) - buttonSize / 2.0f));
+            }
         });
 
 
     }
-
-
 }

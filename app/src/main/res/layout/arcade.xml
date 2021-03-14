@@ -17,7 +17,8 @@
             android:gravity="center"
             android:text="Notice"
             android:textColor="#fff"
-            android:textSize="20sp" />
+            android:textSize="20dp"
+            android:fontFamily="@font/naver_font"/>
     </LinearLayout>
 
 
@@ -27,30 +28,36 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:autoSizeTextType="uniform"
-            android:gravity="center"
-            android:text="주소:"
-            android:textColor="#000" />
-
-        <TextView
+            android:layout_marginTop="3dp"
             android:id="@+id/enter_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:autoSizeTextType="uniform"
+            android:textSize="17dp"
             android:gravity="center"
-            android:text="옥상입구 번호:"
+            android:text="○옥상번호:"
+            android:fontFamily="@font/naver_font"
+            android:textColor="#000" />
+
+        <TextView
+            android:layout_marginTop="3dp"
+            android:id="@+id/address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="17dp"
+            android:gravity="center"
+            android:text="○건물주소: 청주시 "
+            android:fontFamily="@font/naver_font"
             android:textColor="#000" />
 
         <TextView
             android:id="@+id/detail_info"
+            android:layout_marginTop="3dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:autoSizeTextType="uniform"
+            android:textSize="17dp"
             android:gravity="center"
-            android:text="세부사항:"
+            android:text="○세부사항:"
+            android:fontFamily="@font/naver_font"
             android:textColor="#000" />
     </LinearLayout>
 
@@ -58,8 +65,15 @@
     <ImageView
         android:id="@+id/arcadeimg"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/arcadepin1" />
+        android:layout_height="250dp"
+        android:src="@drawable/ic_launcher_background" />
+
+    <ImageView
+        android:layout_marginTop="5dp"
+        android:id="@+id/arcadeimg2"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:src="@drawable/ic_launcher_background" />
 
 
     <LinearLayout
@@ -75,7 +89,8 @@
             android:text="확인"
             android:onClick="mOnClose"
             android:textColor="#ff7a00"
-            android:textSize="20sp" />
+            android:textSize="20dp"
+            android:fontFamily="@font/naver_font"/>
 
     </LinearLayout>
 
