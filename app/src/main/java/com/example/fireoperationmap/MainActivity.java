@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowInsets;
 import android.view.WindowMetrics;
@@ -276,6 +277,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
     private void createMapView() {
         photoView = findViewById(R.id.photo_view);
         //줌 비율 설정
@@ -302,20 +304,31 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 8; i++)
             button[i].setOnClickListener(btnclicklistener);
 
-        }
+        float button_width = button[0].getWidth();
+        float button_height = button[0].getHeight();
 
+
+        button[0].setX(photoView.getDisplayRect().left + ((photoView.getDisplayRect().right - photoView.getDisplayRect().left) * 0.4f) - button_width / 2);
+        button[0].setY(photoView.getDisplayRect().left + ((photoView.getDisplayRect().right - photoView.getDisplayRect().left) * 0.4f) - button_width / 2);
 
         photoView.setOnMatrixChangeListener(rect -> {
             ImageView icon = findViewById(R.id.pin);
             float pinWidth = icon.getWidth();
             float pinHeight = icon.getHeight();
 
+
             icon.setX((rect.left + ((rect.right - rect.left) * curRatio.x) - pinWidth / 2));
             icon.setY((rect.top + ((rect.bottom - rect.top) * curRatio.y) - pinHeight));
+
+            button[0].setX((rect.left + ((rect.right - rect.left) * 0.4f) - button_width / 2));
+            button[0].setY((rect.top + ((rect.bottom - rect.top) * 0.4f) - button_height / 2));
+            Log.d("test width and height", "width: " + pinWidth + ", height: " + button_height);
         });
+
+
     }
 
 
