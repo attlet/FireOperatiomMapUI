@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Insets;
 import android.graphics.Matrix;
@@ -17,6 +18,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.WindowInsets;
 import android.view.WindowMetrics;
@@ -56,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
     private final float slidingPanelAnchorPoint = 0.4f;
     private final PointF curRatio = new PointF(0.0f, 0.0f);
     private long backBtnTime = 0;
+    private enum ButtonState {LARGE, SMALL}
+    private ButtonState buttonState = ButtonState.SMALL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        createMapView();
         initializeAdapterAndRecyclerView();
         createSearchView();
     }
@@ -152,6 +155,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //아케이트 정보를 모두 불러오면 mapview 재귀 호출
         arcadeRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -161,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
                     arcadeList.add(arcade);
                 }
                 Collections.sort(arcadeList);
-                updateArcadeButton();
+                createMapView();
             }
 
             @Override
@@ -304,17 +308,20 @@ public class MainActivity extends AppCompatActivity {
         //줌 비율 설정
         photoView.setMaximumScale(7.0f);
         photoView.setImageResource(R.drawable.operation_map);
+        Toast.makeText(getApplicationContext(), "로딩 완료", Toast.LENGTH_SHORT).show();
+        photoView.setScale(2.7f, 910.0f, 0.0f, false);
 
-    }
 
-    private void updateArcadeButton() {
         //임시 개수
         ImageButton[] button = new ImageButton[arcadeList.size()];
         FrameLayout mapView = findViewById(R.id.mapView);
         final int[] arcadeImgList = new int[]{R.drawable.arcadepin1, R.drawable.arcadepin2, R.drawable.arcadepin3, R.drawable.arcadepin4,
                 R.drawable.arcadepin5, R.drawable.arcadepin6, R.drawable.arcadepin7, R.drawable.arcadepin8};
 
-        final int buttonSize = (int) (20.0f * getResources().getDisplayMetrics().density + 0.5f);
+        final int buttonSizeSmall = dpToPx(this, 15f);
+        final int buttonSizeLarge = dpToPx(this, 40f);
+        int initSize = buttonSizeLarge;
+
 
         //버튼 위치 임시 설정
         PointF[] btnPos = new PointF[arcadeList.size()];
@@ -327,13 +334,13 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < arcadeList.size(); i++) {
             button[i] = new ImageButton(this);
             button[i].setBackgroundResource(arcadeImgList[i]);
-            RelativeLayout.LayoutParams pm = new RelativeLayout.LayoutParams(buttonSize, buttonSize);
+            RelativeLayout.LayoutParams pm = new RelativeLayout.LayoutParams(initSize, initSize);
             pm.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
 
             button[i].setLayoutParams(pm);
             RectF rect = photoView.getDisplayRect();
-            button[i].setX((rect.left + ((rect.right - rect.left) * btnPos[i].x) - buttonSize / 2.0f));
-            button[i].setY((rect.top + ((rect.bottom - rect.top) * btnPos[i].y) - buttonSize / 2.0f));
+            button[i].setX((rect.left + ((rect.right - rect.left) * btnPos[i].x) - initSize / 2.0f));
+            button[i].setY((rect.top + ((rect.bottom - rect.top) * btnPos[i].y) - initSize / 2.0f));
             mapView.addView(button[i]);
         }
 
@@ -356,16 +363,36 @@ public class MainActivity extends AppCompatActivity {
             ImageView icon = findViewById(R.id.pin);
             float pinWidth = icon.getWidth();
             float pinHeight = icon.getHeight();
+            float offset = 0.1f;
 
             icon.setX((rect.left + ((rect.right - rect.left) * curRatio.x) - pinWidth / 2));
             icon.setY((rect.top + ((rect.bottom - rect.top) * curRatio.y) - pinHeight));
 
+            if (buttonState == ButtonState.SMALL && photoView.getScale() > photoView.getMediumScale() + offset) {
+
+                FrameLayout.LayoutParams pm = new FrameLayout.LayoutParams(buttonSizeLarge, buttonSizeLarge);
+                buttonState = ButtonState.LARGE;
+                for (int i = 0; i < arcadeList.size(); i++) {
+                    button[i].setLayoutParams(pm);
+                }
+            }
+            else if (buttonState == ButtonState.LARGE && photoView.getScale() < photoView.getMediumScale() - offset) {
+                FrameLayout.LayoutParams pm = new FrameLayout.LayoutParams(buttonSizeSmall, buttonSizeSmall);
+                buttonState = ButtonState.SMALL;
+                for (int i = 0; i < arcadeList.size(); i++){
+                    button[i].setLayoutParams(pm);
+                }
+            }
+
             for (int i = 0; i < arcadeList.size(); i++) {
-                button[i].setX((rect.left + ((rect.right - rect.left) * btnPos[i].x) - buttonSize / 2.0f));
-                button[i].setY((rect.top + ((rect.bottom - rect.top) * btnPos[i].y) - buttonSize / 2.0f));
+                button[i].setX((rect.left + ((rect.right - rect.left) * btnPos[i].x) - button[i].getLayoutParams().width / 2.0f));
+                button[i].setY((rect.top + ((rect.bottom - rect.top) * btnPos[i].y) - button[i].getLayoutParams().height / 2.0f));
             }
         });
-        Toast.makeText(getApplicationContext(), "로딩 완료", Toast.LENGTH_SHORT).show();
-        photoView.setScale(2.7f, 910.0f, 0.0f, false);
+    }
+
+    public int dpToPx(Context context, float dp) {
+        int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics());
+        return px;
     }
 }
