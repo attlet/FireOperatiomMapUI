@@ -300,12 +300,12 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
     private void createMapView() {
         photoView = findViewById(R.id.photo_view);
         //줌 비율 설정
         photoView.setMaximumScale(7.0f);
         photoView.setImageResource(R.drawable.operation_map);
+
     }
 
     private void updateArcadeButton() {
@@ -315,7 +315,7 @@ public class MainActivity extends AppCompatActivity {
         final int[] arcadeImgList = new int[]{R.drawable.arcadepin1, R.drawable.arcadepin2, R.drawable.arcadepin3, R.drawable.arcadepin4,
                 R.drawable.arcadepin5, R.drawable.arcadepin6, R.drawable.arcadepin7, R.drawable.arcadepin8};
 
-        final int buttonSize = (int) (40.0f * getResources().getDisplayMetrics().density + 0.5f);
+        final int buttonSize = (int) (20.0f * getResources().getDisplayMetrics().density + 0.5f);
 
         //버튼 위치 임시 설정
         PointF[] btnPos = new PointF[arcadeList.size()];
@@ -366,7 +366,7 @@ public class MainActivity extends AppCompatActivity {
                 button[i].setY((rect.top + ((rect.bottom - rect.top) * btnPos[i].y) - buttonSize / 2.0f));
             }
         });
-
-
+        Toast.makeText(getApplicationContext(), "로딩 완료", Toast.LENGTH_SHORT).show();
+        photoView.setScale(2.7f, 910.0f, 0.0f, false);
     }
 }

@@ -13,7 +13,7 @@
         android:layout_height="match_parent"
         android:gravity="bottom"
         app:umanoFadeColor="@android:color/transparent"
-        app:umanoPanelHeight="60dp"
+        app:umanoPanelHeight="65dp"
         app:umanoScrollableView="@+id/recyclerView"
         app:umanoShadowHeight="4dp">
 
