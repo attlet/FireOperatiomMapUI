@@ -307,9 +307,10 @@ public class MainActivity extends AppCompatActivity {
         photoView = findViewById(R.id.photo_view);
         //줌 비율 설정
         photoView.setMaximumScale(7.0f);
+        photoView.setMediumScale(3.8f);
         photoView.setImageResource(R.drawable.operation_map);
         Toast.makeText(getApplicationContext(), "로딩 완료", Toast.LENGTH_SHORT).show();
-        photoView.setScale(2.7f, 910.0f, 0.0f, false);
+        photoView.setScale(2.7f, 1260.0f, 0.0f, false);
 
 
         //임시 개수
