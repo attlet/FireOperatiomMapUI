@@ -308,8 +308,14 @@ public class MainActivity extends AppCompatActivity {
         photoView = findViewById(R.id.photo_view);
         //줌 비율 설정
         photoView.setMaximumScale(7.0f);
+        photoView.setMediumScale(3.8f);
         photoView.setImageResource(R.drawable.operation_map);
+<<<<<<< HEAD
         photoView.setScale(2.7f, 910.0f, 0.0f, false);
+=======
+        Toast.makeText(getApplicationContext(), "로딩 완료", Toast.LENGTH_SHORT).show();
+        photoView.setScale(2.7f, 1260.0f, 0.0f, false);
+>>>>>>> 0164209f8454874aac8e43a16a72599d114b20c5
 
         ImageButton[] arcadeButton = new ImageButton[arcadeList.size()];
         FrameLayout mapView = findViewById(R.id.mapView);
