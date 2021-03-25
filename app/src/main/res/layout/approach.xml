@@ -28,37 +28,27 @@
         android:orientation="vertical">
 
         <TextView
-            android:layout_marginTop="3dp"
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15dp"
-            android:gravity="center"
-            android:text="○옥상번호:"
+            android:layout_marginTop="3dp"
             android:fontFamily="@font/naver_font"
-            android:textColor="#000" />
+            android:gravity="center"
+            android:text="○진입로:"
+            android:textColor="#000"
+            android:textSize="15dp" />
 
         <TextView
-            android:layout_marginTop="3dp"
             android:id="@+id/address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15dp"
-            android:gravity="center"
-            android:text="○건물주소: 청주시 "
-            android:fontFamily="@font/naver_font"
-            android:textColor="#000" />
-
-        <TextView
-            android:id="@+id/detail_info"
             android:layout_marginTop="3dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15dp"
-            android:gravity="center"
-            android:text="○세부사항:"
             android:fontFamily="@font/naver_font"
-            android:textColor="#000" />
+            android:gravity="center"
+            android:text="○주소:"
+            android:textColor="#000"
+            android:textSize="15dp" />
+
     </LinearLayout>
 
 
@@ -66,13 +56,6 @@
         android:id="@+id/approachImg"
         android:layout_width="match_parent"
         android:layout_height="250dp"
-        android:src="@drawable/ic_launcher_background" />
-
-    <ImageView
-        android:layout_marginTop="5dp"
-        android:id="@+id/arcadeimg2"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
         android:src="@drawable/ic_launcher_background" />
 
 

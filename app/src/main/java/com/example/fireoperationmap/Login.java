@@ -96,7 +96,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()) { // 로그인이 성공했으면...
-                            Toast.makeText(Login.this, "로딩중", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Login.this, "로딩중...", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                             startActivity(intent);
                         } else { // 로그인이 실패했으면..
