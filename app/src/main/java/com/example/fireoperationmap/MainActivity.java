@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.WindowInsets;
@@ -33,6 +34,8 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.github.chrisbanes.photoview.PhotoView;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -52,9 +55,11 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private SlidingUpPanelLayout slidingUpPanelLayout;
     private PhotoView photoView;
-    EditText searchField;
+    private EditText searchField;
+    private boolean checkDataLoaded = false;
     private Map<Integer, Map<Integer, Place>> sectionData = new HashMap<>();
     private List<Arcade> arcadeList = new ArrayList<>();
+    private List<Approach> approachList = new ArrayList<>();
     private final float slidingPanelAnchorPoint = 0.4f;
     private final PointF curRatio = new PointF(0.0f, 0.0f);
     private long backBtnTime = 0;
@@ -91,12 +96,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() { //뒤로가기 두 번 눌를 시 종료
+    public void onBackPressed() {//뒤로가기 두 번 눌를 시 종료
         long curTime = System.currentTimeMillis();
         long gaptime = curTime - backBtnTime;
 
         if (0 <= gaptime && 2000 >= gaptime) {
-            moveTaskToBack(true);                        // 태스크를 백그라운드로 이동
+            // 태스크를 백그라운드로 이동
+            moveTaskToBack(true);
             finishAndRemoveTask();
             android.os.Process.killProcess(android.os.Process.myPid());
         } else {
@@ -107,37 +113,33 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initializeAdapterAndRecyclerView() {
-        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("User");
-        DatabaseReference sectionRef = FirebaseDatabase.getInstance().getReference().child("Section");
-        DatabaseReference arcadeRef = FirebaseDatabase.getInstance().getReference().child("Arcade");
+        DatabaseReference dataRef = FirebaseDatabase.getInstance().getReference("Data");
         adapter = new CustomAdapter();
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(MainActivity.this);
         recyclerView.setLayoutManager(layoutManager);
 
-        //파에어베이스에서 adapter.userList로 데이터를 불러옴
-        userRef.addValueEventListener(new ValueEventListener() {
+        dataRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                DataSnapshot userSnapshot = snapshot.child("User");
+                DataSnapshot sectionSnapshot = snapshot.child("Section");
+                DataSnapshot arcadeSnapshot = snapshot.child("Arcade");
+                DataSnapshot approachSnapshot = snapshot.child("Approach");
+
+                if (!snapshot.hasChildren())
+                    Toast.makeText(MainActivity.this, "체크용", Toast.LENGTH_SHORT).show();
+
                 adapter.init();
-                for (DataSnapshot data : snapshot.getChildren()) {
+                for (DataSnapshot data : userSnapshot.getChildren()) {
                     User user = data.getValue(User.class);
                     adapter.addUser(user);
                 }
                 recyclerView.setAdapter(adapter);
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });
-
-        sectionRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
                 sectionData = new HashMap<>();
-                for (DataSnapshot sectionData : snapshot.getChildren()) {
+                for (DataSnapshot sectionData : sectionSnapshot.getChildren()) {
                     int sectionKey = Integer.parseInt(sectionData.getKey().split("_")[1]);
                     if (!MainActivity.this.sectionData.containsKey(sectionKey)) {
                         MainActivity.this.sectionData.put(sectionKey, new HashMap<>());
@@ -148,28 +150,27 @@ public class MainActivity extends AppCompatActivity {
                         MainActivity.this.sectionData.get(sectionKey).put(placeKey, place);
                     }
                 }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        });
-
-        //아케이트 정보를 모두 불러오면 mapview 재귀 호출
-        arcadeRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
                 arcadeList = new ArrayList<>();
-                for (DataSnapshot data : snapshot.getChildren()) {
+                for (DataSnapshot data : arcadeSnapshot.getChildren()) {
                     Arcade arcade = data.getValue(Arcade.class);
                     arcadeList.add(arcade);
                 }
                 Collections.sort(arcadeList);
+
+                approachList = new ArrayList<>();
+                for (DataSnapshot data : approachSnapshot.getChildren()) {
+                    Approach approach = data.getValue(Approach.class);
+                    approachList.add(approach);
+                }
+
                 createMapView();
+                Toast.makeText(MainActivity.this, "로딩 완료", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
 
@@ -309,45 +310,56 @@ public class MainActivity extends AppCompatActivity {
         photoView.setMaximumScale(7.0f);
         photoView.setMediumScale(3.8f);
         photoView.setImageResource(R.drawable.operation_map);
+<<<<<<< HEAD
+        photoView.setScale(2.7f, 910.0f, 0.0f, false);
+=======
         Toast.makeText(getApplicationContext(), "로딩 완료", Toast.LENGTH_SHORT).show();
         photoView.setScale(2.7f, 1260.0f, 0.0f, false);
+>>>>>>> 0164209f8454874aac8e43a16a72599d114b20c5
 
-
-        //임시 개수
-        ImageButton[] button = new ImageButton[arcadeList.size()];
+        ImageButton[] arcadeButton = new ImageButton[arcadeList.size()];
         FrameLayout mapView = findViewById(R.id.mapView);
         final int[] arcadeImgList = new int[]{R.drawable.arcadepin1, R.drawable.arcadepin2, R.drawable.arcadepin3, R.drawable.arcadepin4,
                 R.drawable.arcadepin5, R.drawable.arcadepin6, R.drawable.arcadepin7, R.drawable.arcadepin8};
 
-        final int buttonSizeSmall = dpToPx(this, 15f);
-        final int buttonSizeLarge = dpToPx(this, 40f);
-        int initSize = buttonSizeLarge;
+        ImageButton[] approachButton = new ImageButton[approachList.size()];
+        final int[] approachImgList = new int[]{R.drawable.approach_pin_a, R.drawable.approach_pin_b, R.drawable.approach_pin_c, R.drawable.approach_pin_d,
+                R.drawable.approach_pin_e, R.drawable.approach_pin_f, R.drawable.approach_pin_g, R.drawable.approach_pin_h,
+                R.drawable.approach_pin_i, R.drawable.approach_pin_j, R.drawable.approach_pin_k};
 
+        float arcadeInitDp = 5f;
+        RelativeLayout.LayoutParams arcadeParam = new RelativeLayout.LayoutParams(dpToPx(MainActivity.this, arcadeInitDp * photoView.getScale()), dpToPx(MainActivity.this, arcadeInitDp * photoView.getScale()));
+        arcadeParam.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
 
-        //버튼 위치 임시 설정
-        PointF[] btnPos = new PointF[arcadeList.size()];
+        float approachInitDp = 15f;
+        RelativeLayout.LayoutParams approachParam = new RelativeLayout.LayoutParams(dpToPx(MainActivity.this, approachInitDp * photoView.getScale()), dpToPx(MainActivity.this, approachInitDp * photoView.getScale()));
+        approachParam.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+
         for (int i = 0; i < arcadeList.size(); i++) {
-            btnPos[i] = new PointF();
-            btnPos[i].x = arcadeList.get(i).getX();
-            btnPos[i].y = arcadeList.get(i).getY();
+            arcadeButton[i] = new ImageButton(this);
+            arcadeButton[i].setBackgroundResource(arcadeImgList[i]);
+
+            arcadeButton[i].setLayoutParams(arcadeParam);
+            RectF rect = photoView.getDisplayRect();
+            arcadeButton[i].setX((rect.left + ((rect.right - rect.left) * arcadeList.get(i).getX()) - arcadeParam.width / 2.0f));
+            arcadeButton[i].setY((rect.top + ((rect.bottom - rect.top) * arcadeList.get(i).getY()) - arcadeParam.height / 2.0f));
+            mapView.addView(arcadeButton[i]);
         }
 
-        for (int i = 0; i < arcadeList.size(); i++) {
-            button[i] = new ImageButton(this);
-            button[i].setBackgroundResource(arcadeImgList[i]);
-            RelativeLayout.LayoutParams pm = new RelativeLayout.LayoutParams(initSize, initSize);
-            pm.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+        for (int i = 0; i < approachList.size(); i++) {
+            approachButton[i] = new ImageButton(this);
+            approachButton[i].setBackgroundResource(approachImgList[i]);
 
-            button[i].setLayoutParams(pm);
+            approachButton[i].setLayoutParams(approachParam);
             RectF rect = photoView.getDisplayRect();
-            button[i].setX((rect.left + ((rect.right - rect.left) * btnPos[i].x) - initSize / 2.0f));
-            button[i].setY((rect.top + ((rect.bottom - rect.top) * btnPos[i].y) - initSize / 2.0f));
-            mapView.addView(button[i]);
+            approachButton[i].setX((rect.left + ((rect.right - rect.left) * approachList.get(i).getX()) - approachParam.width/ 2.0f));
+            approachButton[i].setY((rect.top + ((rect.bottom - rect.top) * approachList.get(i).getY()) - approachParam.height / 2.0f));
+            mapView.addView(approachButton[i]);
         }
 
         for (int i = 0; i < arcadeList.size(); i++) {
             int finalI = i;
-            button[i].setOnClickListener(v -> {
+            arcadeButton[i].setOnClickListener(v -> {
                 //검색 느림 추후 개선
                 String arcadeId = arcadeList.get(finalI).getId().trim();
                 String address = adapter.getItem(arcadeId).getAddress();
@@ -360,34 +372,45 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
+        for (int i = 0; i < approachList.size(); i++) {
+            int finalI = i;
+            approachButton[i].setOnClickListener(v -> {
+                Intent intent = new Intent(getApplicationContext(), ApproachPop.class);
+                intent.putExtra("Name", approachList.get(finalI).getName());
+                intent.putExtra("Address", approachList.get(finalI).getAddress());
+                intent.putExtra("Num", Integer.toString(finalI));
+                startActivityForResult(intent, 1);
+            });
+        }
+
         photoView.setOnMatrixChangeListener(rect -> {
             ImageView icon = findViewById(R.id.pin);
             float pinWidth = icon.getWidth();
             float pinHeight = icon.getHeight();
-            float offset = 0.1f;
 
             icon.setX((rect.left + ((rect.right - rect.left) * curRatio.x) - pinWidth / 2));
             icon.setY((rect.top + ((rect.bottom - rect.top) * curRatio.y) - pinHeight));
 
-            if (buttonState == ButtonState.SMALL && photoView.getScale() > photoView.getMediumScale() + offset) {
-
-                FrameLayout.LayoutParams pm = new FrameLayout.LayoutParams(buttonSizeLarge, buttonSizeLarge);
-                buttonState = ButtonState.LARGE;
-                for (int i = 0; i < arcadeList.size(); i++) {
-                    button[i].setLayoutParams(pm);
-                }
+            for (int i = 0; i < arcadeList.size(); i++) {
+                FrameLayout.LayoutParams tmp = (FrameLayout.LayoutParams) arcadeButton[i].getLayoutParams();
+                tmp.width = dpToPx(MainActivity.this,arcadeInitDp * photoView.getScale());
+                tmp.height = dpToPx(MainActivity.this,arcadeInitDp * photoView.getScale());
+                arcadeButton[i].setLayoutParams(tmp);
             }
-            else if (buttonState == ButtonState.LARGE && photoView.getScale() < photoView.getMediumScale() - offset) {
-                FrameLayout.LayoutParams pm = new FrameLayout.LayoutParams(buttonSizeSmall, buttonSizeSmall);
-                buttonState = ButtonState.SMALL;
-                for (int i = 0; i < arcadeList.size(); i++){
-                    button[i].setLayoutParams(pm);
-                }
+            for (int i = 0; i < approachList.size(); i++) {
+                FrameLayout.LayoutParams tmp = (FrameLayout.LayoutParams) approachButton[i].getLayoutParams();
+                tmp.width = dpToPx(MainActivity.this,approachInitDp * photoView.getScale());
+                tmp.height = dpToPx(MainActivity.this,approachInitDp * photoView.getScale());
+                approachButton[i].setLayoutParams(tmp);
             }
 
             for (int i = 0; i < arcadeList.size(); i++) {
-                button[i].setX((rect.left + ((rect.right - rect.left) * btnPos[i].x) - button[i].getLayoutParams().width / 2.0f));
-                button[i].setY((rect.top + ((rect.bottom - rect.top) * btnPos[i].y) - button[i].getLayoutParams().height / 2.0f));
+                arcadeButton[i].setX((rect.left + ((rect.right - rect.left) * arcadeList.get(i).getX()) - arcadeButton[i].getLayoutParams().width / 2.0f));
+                arcadeButton[i].setY((rect.top + ((rect.bottom - rect.top) * arcadeList.get(i).getY()) - arcadeButton[i].getLayoutParams().height / 2.0f));
+            }
+            for (int i = 0; i < approachList.size(); i++) {
+                approachButton[i].setX((rect.left + ((rect.right - rect.left) * approachList.get(i).getX()) - approachButton[i].getLayoutParams().width / 2.0f));
+                approachButton[i].setY((rect.top + ((rect.bottom - rect.top) * approachList.get(i).getY()) - approachButton[i].getLayoutParams().height / 2.0f));
             }
         });
     }

@@ -10,23 +10,18 @@ public class Arcade implements Comparable<Arcade>{
     public String getDetail() {
         return detail;
     }
-
     public String getId() {
         return id;
     }
-
     public int getNum() {
         return Integer.parseInt(this.num);
     }
-
     public float getX() {
         return x;
     }
-
     public float getY() {
         return y;
     }
-
     public Arcade(){}
 
     @Override
