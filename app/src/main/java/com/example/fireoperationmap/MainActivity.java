@@ -310,12 +310,12 @@ public class MainActivity extends AppCompatActivity {
         photoView.setMaximumScale(7.0f);
         photoView.setMediumScale(3.8f);
         photoView.setImageResource(R.drawable.operation_map);
-<<<<<<< HEAD
+
         photoView.setScale(2.7f, 910.0f, 0.0f, false);
-=======
+
         Toast.makeText(getApplicationContext(), "로딩 완료", Toast.LENGTH_SHORT).show();
         photoView.setScale(2.7f, 1260.0f, 0.0f, false);
->>>>>>> 0164209f8454874aac8e43a16a72599d114b20c5
+
 
         ImageButton[] arcadeButton = new ImageButton[arcadeList.size()];
         FrameLayout mapView = findViewById(R.id.mapView);
@@ -375,11 +375,11 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < approachList.size(); i++) {
             int finalI = i;
             approachButton[i].setOnClickListener(v -> {
-                Intent intent = new Intent(getApplicationContext(), ApproachPop.class);
-                intent.putExtra("Name", approachList.get(finalI).getName());
-                intent.putExtra("Address", approachList.get(finalI).getAddress());
-                intent.putExtra("Num", Integer.toString(finalI));
-                startActivityForResult(intent, 1);
+                Intent intent2 = new Intent(getApplicationContext(), ApproachPop.class);
+                intent2.putExtra("Name", approachList.get(finalI).getName());
+                intent2.putExtra("Address", approachList.get(finalI).getAddress());
+                intent2.putExtra("Num", Integer.toString(finalI));
+                startActivityForResult(intent2, 1);
             });
         }
 
