@@ -18,24 +18,23 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.WindowInsets;
 import android.view.WindowMetrics;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.github.chrisbanes.photoview.PhotoView;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -56,15 +55,12 @@ public class MainActivity extends AppCompatActivity {
     private SlidingUpPanelLayout slidingUpPanelLayout;
     private PhotoView photoView;
     private EditText searchField;
-    private boolean checkDataLoaded = false;
     private Map<Integer, Map<Integer, Place>> sectionData = new HashMap<>();
     private List<Arcade> arcadeList = new ArrayList<>();
     private List<Approach> approachList = new ArrayList<>();
     private final float slidingPanelAnchorPoint = 0.4f;
     private final PointF curRatio = new PointF(0.0f, 0.0f);
     private long backBtnTime = 0;
-    private enum ButtonState {LARGE, SMALL}
-    private ButtonState buttonState = ButtonState.SMALL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -411,6 +407,26 @@ public class MainActivity extends AppCompatActivity {
             for (int i = 0; i < approachList.size(); i++) {
                 approachButton[i].setX((rect.left + ((rect.right - rect.left) * approachList.get(i).getX()) - approachButton[i].getLayoutParams().width / 2.0f));
                 approachButton[i].setY((rect.top + ((rect.bottom - rect.top) * approachList.get(i).getY()) - approachButton[i].getLayoutParams().height / 2.0f));
+            }
+        });
+
+
+        Switch btnSwitch = findViewById(R.id.btn_switch);
+
+        btnSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                for (int i = 0; i < arcadeList.size(); i++) {
+                    if (arcadeButton[i].getVisibility() == View.VISIBLE)
+                        arcadeButton[i].setVisibility(View.INVISIBLE);
+                    else arcadeButton[i].setVisibility(View.VISIBLE);
+                }
+
+                for (int i = 0; i < approachList.size(); i++) {
+                    if (approachButton[i].getVisibility() == View.VISIBLE)
+                        approachButton[i].setVisibility(View.INVISIBLE);
+                    else approachButton[i].setVisibility(View.VISIBLE);
+                }
             }
         });
     }
