@@ -341,10 +341,16 @@ public class MainActivity extends AppCompatActivity {
                 R.drawable.approach_pin_i, R.drawable.approach_pin_j, R.drawable.approach_pin_k};
 
         ImageView[] auto_arcadeIv = new ImageView[auto_arcadeList.size()];  //지상 아케이트 이미지 추가
-        final int[] auto_arcadeImgList = new int[]{R.drawable.arcade_a};
+        final int[] auto_arcadeImgList = new int[]{R.drawable.arcade_a, R.drawable.arcade_b, R.drawable.arcade_c, R.drawable.arcade_d,R.drawable.arcade_e, R.drawable.arcade_f,
+                R.drawable.arcade_g, R.drawable.arcade_h, R.drawable.arcade_i, R.drawable.arcade_j, R.drawable.arcade_k, R.drawable.arcade_l, R.drawable.arcade_m,
+                R.drawable.arcade_n, R.drawable.arcade_o, R.drawable.arcade_p, R.drawable.arcade_q, R.drawable.arcade_r};
 
         ImageView[] fireplugIv = new ImageView[fireplugList.size()];       //소화전 이미지 추가
-        final int[] fireplugImgList = new int[]{R.drawable.arcade_a};
+        final int[] fireplugImgList = new int[]{R.drawable.fireplugimg_10, R.drawable.fireplugimg_20, R.drawable.fireplugimg_13, R.drawable.fireplugimg_14, R.drawable.fireplugimg_15,
+                 R.drawable.fireplugimg_16, R.drawable.fireplugimg_17, R.drawable.fireplugimg_18, R.drawable.fireplugimg_9, R.drawable.fireplugimg_10, R.drawable.fireplugimg_11,
+                 R.drawable.fireplugimg_12, R.drawable.fireplugimg_13, R.drawable.fireplugimg_14, R.drawable.fireplugimg_15, R.drawable.fireplugimg_16, R.drawable.fireplugimg_17,
+                 R.drawable.fireplugimg_18, R.drawable.fireplugimg_19, R.drawable.fireplugimg_20, R.drawable.fireplugimg_21, R.drawable.fireplugimg_22, R.drawable.fireplugimg_23,
+                 R.drawable.fireplugimg_24, R.drawable.fireplugimg_25, R.drawable.fireplugimg_26, R.drawable.fireplugimg_27};
 
         float arcadeInitDp = 5f;
         RelativeLayout.LayoutParams arcadeParam = new RelativeLayout.LayoutParams(dpToPx(MainActivity.this, arcadeInitDp * photoView.getScale()), dpToPx(MainActivity.this, arcadeInitDp * photoView.getScale()));
@@ -494,12 +500,6 @@ public class MainActivity extends AppCompatActivity {
                     if (arcadeButton[i].getVisibility() == View.VISIBLE)
                         arcadeButton[i].setVisibility(View.INVISIBLE);
                     else arcadeButton[i].setVisibility(View.VISIBLE);
-                }
-
-                for (int i = 0; i < approachList.size(); i++) {                     //진입로 필터링은 삭제해야함
-                    if (approachButton[i].getVisibility() == View.VISIBLE)
-                        approachButton[i].setVisibility(View.INVISIBLE);
-                    else approachButton[i].setVisibility(View.VISIBLE);
                 }
 
                 for (int i = 0; i < auto_arcadeList.size(); i++) {                  //지상 아케이트. 수동아케이트와 라디오 연결 통합
