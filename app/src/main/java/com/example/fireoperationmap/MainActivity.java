@@ -13,6 +13,7 @@ import android.graphics.Insets;
 import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.graphics.RectF;
+import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
@@ -58,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
     private Map<Integer, Map<Integer, Place>> sectionData = new HashMap<>();
     private List<Arcade> arcadeList = new ArrayList<>();
     private List<Approach> approachList = new ArrayList<>();
+    private List<Auto_Arcade> auto_arcadeList = new ArrayList<>();
+    private List<Fireplug> fireplugList = new ArrayList<>();
     private final float slidingPanelAnchorPoint = 0.4f;
     private final PointF curRatio = new PointF(0.0f, 0.0f);
     private long backBtnTime = 0;
@@ -123,6 +126,8 @@ public class MainActivity extends AppCompatActivity {
                 DataSnapshot sectionSnapshot = snapshot.child("Section");
                 DataSnapshot arcadeSnapshot = snapshot.child("Arcade");
                 DataSnapshot approachSnapshot = snapshot.child("Approach");
+                DataSnapshot autoArcadeSnapshot = snapshot.child("AutoArcade");
+                DataSnapshot fireplugSnapshot = snapshot.child("Fireplug");
 
                 if (!snapshot.hasChildren())
                     Toast.makeText(MainActivity.this, "체크용", Toast.LENGTH_SHORT).show();
@@ -158,6 +163,18 @@ public class MainActivity extends AppCompatActivity {
                 for (DataSnapshot data : approachSnapshot.getChildren()) {
                     Approach approach = data.getValue(Approach.class);
                     approachList.add(approach);
+                }
+
+                auto_arcadeList = new ArrayList<>();
+                for (DataSnapshot data : autoArcadeSnapshot.getChildren()) {
+                    Auto_Arcade auto_arcade = data.getValue(Auto_Arcade.class);
+                    auto_arcadeList.add(auto_arcade);
+                }
+
+                fireplugList = new ArrayList<>();
+                for (DataSnapshot data : fireplugSnapshot.getChildren()) {
+                    Fireplug fireplug = data.getValue(Fireplug.class);
+                    fireplugList.add(fireplug);
                 }
 
                 createMapView();
@@ -323,6 +340,12 @@ public class MainActivity extends AppCompatActivity {
                 R.drawable.approach_pin_e, R.drawable.approach_pin_f, R.drawable.approach_pin_g, R.drawable.approach_pin_h,
                 R.drawable.approach_pin_i, R.drawable.approach_pin_j, R.drawable.approach_pin_k};
 
+        ImageView[] auto_arcadeIv = new ImageView[auto_arcadeList.size()];  //지상 아케이트 이미지 추가
+        final int[] auto_arcadeImgList = new int[]{R.drawable.arcade_a};
+
+        ImageView[] fireplugIv = new ImageView[fireplugList.size()];       //소화전 이미지 추가
+        final int[] fireplugImgList = new int[]{R.drawable.arcade_a};
+
         float arcadeInitDp = 5f;
         RelativeLayout.LayoutParams arcadeParam = new RelativeLayout.LayoutParams(dpToPx(MainActivity.this, arcadeInitDp * photoView.getScale()), dpToPx(MainActivity.this, arcadeInitDp * photoView.getScale()));
         arcadeParam.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
@@ -330,6 +353,14 @@ public class MainActivity extends AppCompatActivity {
         float approachInitDp = 15f;
         RelativeLayout.LayoutParams approachParam = new RelativeLayout.LayoutParams(dpToPx(MainActivity.this, approachInitDp * photoView.getScale()), dpToPx(MainActivity.this, approachInitDp * photoView.getScale()));
         approachParam.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+
+        float auto_arcadeInitDp = 5f;
+        RelativeLayout.LayoutParams auto_arcadeParam = new RelativeLayout.LayoutParams(dpToPx(MainActivity.this, auto_arcadeInitDp * photoView.getScale()), dpToPx(MainActivity.this, auto_arcadeInitDp * photoView.getScale()));
+        approachParam.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+
+        float fireplugInitDp = 5f;
+        RelativeLayout.LayoutParams fireplugParam = new RelativeLayout.LayoutParams(dpToPx(MainActivity.this, fireplugInitDp * photoView.getScale()), dpToPx(MainActivity.this, fireplugInitDp * photoView.getScale()));
+        fireplugParam.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
 
         for (int i = 0; i < arcadeList.size(); i++) {
             arcadeButton[i] = new ImageButton(this);
@@ -351,6 +382,28 @@ public class MainActivity extends AppCompatActivity {
             approachButton[i].setX((rect.left + ((rect.right - rect.left) * approachList.get(i).getX()) - approachParam.width/ 2.0f));
             approachButton[i].setY((rect.top + ((rect.bottom - rect.top) * approachList.get(i).getY()) - approachParam.height / 2.0f));
             mapView.addView(approachButton[i]);
+        }
+
+        for (int i = 0; i < auto_arcadeList.size(); i++) {
+            auto_arcadeIv[i] = new ImageView(this);
+            auto_arcadeIv[i].setBackgroundResource(auto_arcadeImgList[i]);
+
+            auto_arcadeIv[i].setLayoutParams(auto_arcadeParam);
+            RectF rect = photoView.getDisplayRect();
+            auto_arcadeIv[i].setX((rect.left + ((rect.right - rect.left) * auto_arcadeList.get(i).getX()) - auto_arcadeParam.width/ 2.0f));
+            auto_arcadeIv[i].setY((rect.top + ((rect.bottom - rect.top) * auto_arcadeList.get(i).getY()) - auto_arcadeParam.height / 2.0f));
+            mapView.addView(auto_arcadeIv[i]);
+        }
+
+        for (int i = 0; i < fireplugList.size(); i++) {
+            fireplugIv[i] = new ImageView(this);
+            fireplugIv[i].setBackgroundResource(fireplugImgList[i]);
+
+            fireplugIv[i].setLayoutParams(auto_arcadeParam);
+            RectF rect = photoView.getDisplayRect();
+            fireplugIv[i].setX((rect.left + ((rect.right - rect.left) * fireplugList.get(i).getX()) - fireplugParam.width/ 2.0f));
+            fireplugIv[i].setY((rect.top + ((rect.bottom - rect.top) * fireplugList.get(i).getY()) - fireplugParam.height / 2.0f));
+            mapView.addView(fireplugIv[i]);
         }
 
         for (int i = 0; i < arcadeList.size(); i++) {
@@ -379,6 +432,7 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
+
         photoView.setOnMatrixChangeListener(rect -> {
             ImageView icon = findViewById(R.id.pin);
             float pinWidth = icon.getWidth();
@@ -399,6 +453,18 @@ public class MainActivity extends AppCompatActivity {
                 tmp.height = dpToPx(MainActivity.this,approachInitDp * photoView.getScale());
                 approachButton[i].setLayoutParams(tmp);
             }
+            for (int i = 0; i < auto_arcadeList.size(); i++) {          //지상 아케이트 크기
+                FrameLayout.LayoutParams tmp = (FrameLayout.LayoutParams) auto_arcadeIv[i].getLayoutParams();
+                tmp.width = dpToPx(MainActivity.this,approachInitDp * photoView.getScale());
+                tmp.height = dpToPx(MainActivity.this,approachInitDp * photoView.getScale());
+                auto_arcadeIv[i].setLayoutParams(tmp);
+            }
+            for (int i = 0; i < fireplugList.size(); i++) {         //소화전 크기
+                FrameLayout.LayoutParams tmp = (FrameLayout.LayoutParams) fireplugIv[i].getLayoutParams();
+                tmp.width = dpToPx(MainActivity.this,fireplugInitDp * photoView.getScale());
+                tmp.height = dpToPx(MainActivity.this,fireplugInitDp * photoView.getScale());
+                fireplugIv[i].setLayoutParams(tmp);
+            }
 
             for (int i = 0; i < arcadeList.size(); i++) {
                 arcadeButton[i].setX((rect.left + ((rect.right - rect.left) * arcadeList.get(i).getX()) - arcadeButton[i].getLayoutParams().width / 2.0f));
@@ -407,6 +473,14 @@ public class MainActivity extends AppCompatActivity {
             for (int i = 0; i < approachList.size(); i++) {
                 approachButton[i].setX((rect.left + ((rect.right - rect.left) * approachList.get(i).getX()) - approachButton[i].getLayoutParams().width / 2.0f));
                 approachButton[i].setY((rect.top + ((rect.bottom - rect.top) * approachList.get(i).getY()) - approachButton[i].getLayoutParams().height / 2.0f));
+            }
+            for (int i = 0; i < auto_arcadeList.size(); i++) {          //지상 아케이트 크기
+                auto_arcadeIv[i].setX((rect.left + ((rect.right - rect.left) * auto_arcadeList.get(i).getX()) - auto_arcadeIv[i].getLayoutParams().width / 2.0f));
+                auto_arcadeIv[i].setY((rect.top + ((rect.bottom - rect.top) * auto_arcadeList.get(i).getY()) - auto_arcadeIv[i].getLayoutParams().height / 2.0f));
+            }
+            for (int i = 0; i < fireplugList.size(); i++) {         //소화전 크기
+                fireplugIv[i].setX((rect.left + ((rect.right - rect.left) * fireplugList.get(i).getX()) - fireplugIv[i].getLayoutParams().width / 2.0f));
+                fireplugIv[i].setY((rect.top + ((rect.bottom - rect.top) * fireplugList.get(i).getY()) - fireplugIv[i].getLayoutParams().height / 2.0f));
             }
         });
 
@@ -422,10 +496,22 @@ public class MainActivity extends AppCompatActivity {
                     else arcadeButton[i].setVisibility(View.VISIBLE);
                 }
 
-                for (int i = 0; i < approachList.size(); i++) {
+                for (int i = 0; i < approachList.size(); i++) {                     //진입로 필터링은 삭제해야함
                     if (approachButton[i].getVisibility() == View.VISIBLE)
                         approachButton[i].setVisibility(View.INVISIBLE);
                     else approachButton[i].setVisibility(View.VISIBLE);
+                }
+
+                for (int i = 0; i < auto_arcadeList.size(); i++) {                  //지상 아케이트. 수동아케이트와 라디오 연결 통합
+                    if (auto_arcadeIv[i].getVisibility() == View.VISIBLE)
+                        auto_arcadeIv[i].setVisibility(View.INVISIBLE);
+                    else auto_arcadeIv[i].setVisibility(View.VISIBLE);
+                }
+
+                for (int i = 0; i < fireplugList.size(); i++) {                 //소화전 라디오 버튼
+                    if (fireplugIv[i].getVisibility() == View.VISIBLE)
+                        fireplugIv[i].setVisibility(View.INVISIBLE);
+                    else fireplugIv[i].setVisibility(View.VISIBLE);
                 }
             }
         });
