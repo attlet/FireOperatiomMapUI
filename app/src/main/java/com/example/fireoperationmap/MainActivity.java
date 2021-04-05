@@ -3,9 +3,12 @@ package com.example.fireoperationmap;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -20,11 +23,13 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.view.WindowInsets;
 import android.view.WindowMetrics;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -317,6 +322,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
     private void createMapView() {
         photoView = findViewById(R.id.photo_view);
         //줌 비율 설정
@@ -461,8 +467,8 @@ public class MainActivity extends AppCompatActivity {
             }
             for (int i = 0; i < auto_arcadeList.size(); i++) {          //지상 아케이트 크기
                 FrameLayout.LayoutParams tmp = (FrameLayout.LayoutParams) auto_arcadeIv[i].getLayoutParams();
-                tmp.width = dpToPx(MainActivity.this,approachInitDp * photoView.getScale());
-                tmp.height = dpToPx(MainActivity.this,approachInitDp * photoView.getScale());
+                tmp.width = dpToPx(MainActivity.this,auto_arcadeInitDp * photoView.getScale());
+                tmp.height = dpToPx(MainActivity.this,auto_arcadeInitDp * photoView.getScale());
                 auto_arcadeIv[i].setLayoutParams(tmp);
             }
             for (int i = 0; i < fireplugList.size(); i++) {         //소화전 크기
@@ -490,10 +496,23 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Switch fireplugSwitch = findViewById(R.id.fireplug_switch);
+        Switch arcadeSwitch = findViewById(R.id.arcade_switch);
+        Switch autoArcadeSwitch = findViewById(R.id.auto_arcade_switch);
+        Switch approachSwitch = findViewById(R.id.approach_switch);
 
-        Switch btnSwitch = findViewById(R.id.btn_switch);
+        fireplugSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                for (int i = 0; i < fireplugList.size(); i++) {
+                    if (fireplugIv[i].getVisibility() == View.VISIBLE)
+                        fireplugIv[i].setVisibility(View.INVISIBLE);
+                    else fireplugIv[i].setVisibility(View.VISIBLE);
+                }
+            }
+        });
 
-        btnSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        arcadeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 for (int i = 0; i < arcadeList.size(); i++) {
@@ -501,18 +520,37 @@ public class MainActivity extends AppCompatActivity {
                         arcadeButton[i].setVisibility(View.INVISIBLE);
                     else arcadeButton[i].setVisibility(View.VISIBLE);
                 }
+            }
+        });
 
-                for (int i = 0; i < auto_arcadeList.size(); i++) {                  //지상 아케이트. 수동아케이트와 라디오 연결 통합
+        autoArcadeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                for (int i = 0; i < auto_arcadeList.size(); i++) {
                     if (auto_arcadeIv[i].getVisibility() == View.VISIBLE)
                         auto_arcadeIv[i].setVisibility(View.INVISIBLE);
                     else auto_arcadeIv[i].setVisibility(View.VISIBLE);
                 }
+            }
+        });
 
-                for (int i = 0; i < fireplugList.size(); i++) {                 //소화전 라디오 버튼
-                    if (fireplugIv[i].getVisibility() == View.VISIBLE)
-                        fireplugIv[i].setVisibility(View.INVISIBLE);
-                    else fireplugIv[i].setVisibility(View.VISIBLE);
+        approachSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                for (int i = 0; i < approachList.size(); i++) {
+                    if (approachButton[i].getVisibility() == View.VISIBLE)
+                        approachButton[i].setVisibility(View.INVISIBLE);
+                    else approachButton[i].setVisibility(View.VISIBLE);
                 }
+            }
+        });
+
+        Button optionButton = findViewById(R.id.optionButton);
+        DrawerLayout drawer = findViewById(R.id.drawer);
+        optionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawer.openDrawer(GravityCompat.END);
             }
         });
     }

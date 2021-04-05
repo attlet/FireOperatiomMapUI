@@ -1,136 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
     tools:context=".MainActivity">
 
-    <com.sothree.slidinguppanel.SlidingUpPanelLayout
-        android:id="@+id/slidingLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="bottom"
-        app:umanoFadeColor="@android:color/transparent"
-        app:umanoPanelHeight="65dp"
-        app:umanoScrollableView="@+id/recyclerView"
-        app:umanoShadowHeight="4dp">
-
-        <FrameLayout
-            android:id="@+id/mapView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <com.github.chrisbanes.photoview.PhotoView
-                android:id="@+id/photo_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <ImageView
-                android:id="@+id/pin"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:scaleType="centerInside"
-                android:src="@drawable/pin"
-                android:visibility="invisible" />
-
-        </FrameLayout>
-
-        <include layout="@layout/sliding_up_panel" />
-
-    </com.sothree.slidinguppanel.SlidingUpPanelLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <EditText
-            android:id="@+id/searchField"
+        <com.sothree.slidinguppanel.SlidingUpPanelLayout
+            android:id="@+id/slidingLayout"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="24dp"
-            android:background="@drawable/relative_border"
-            android:ems="10"
-            android:fontFamily="@font/naver_font"
-            android:hint=" 상호 및 주소 검색"
-            android:imeOptions="actionSearch"
-            android:inputType="textPersonName"
-            android:textColor="#000000"
-            android:textColorHint="@color/hint_text_color"
-            android:textSize="15dp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="Autofill,TextFields" />
+            android:layout_height="match_parent"
+            android:gravity="bottom"
+            app:umanoFadeColor="@android:color/transparent"
+            app:umanoPanelHeight="65dp"
+            app:umanoScrollableView="@+id/recyclerView"
+            app:umanoShadowHeight="4dp">
 
-        <ImageButton
-            android:id="@+id/searchButton"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="32dp"
-            android:background="@android:color/transparent"
-            android:scaleType="centerInside"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/search" />
+            <FrameLayout
+                android:id="@+id/mapView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-        <RelativeLayout
+                <com.github.chrisbanes.photoview.PhotoView
+                    android:id="@+id/photo_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <ImageView
+                    android:id="@+id/pin"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/pin"
+                    android:visibility="invisible" />
+
+            </FrameLayout>
+
+            <include layout="@layout/sliding_up_panel" />
+
+        </com.sothree.slidinguppanel.SlidingUpPanelLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="48dp"
-            android:layout_marginEnd="24dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="match_parent">
 
-            <RadioGroup
-                android:id="@+id/radioGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+            <EditText
+                android:id="@+id/searchField"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="24dp"
+                android:background="@drawable/relative_border"
+                android:ems="10"
+                android:fontFamily="@font/naver_font"
+                android:hint=" 상호 및 주소 검색"
+                android:imeOptions="actionSearch"
+                android:inputType="textPersonName"
+                android:textColor="#000000"
+                android:textColorHint="@color/hint_text_color"
+                android:textSize="15dp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="Autofill,TextFields" />
 
-                <RadioButton
-                    android:id="@+id/rb_stname"
+            <ImageButton
+                android:id="@+id/searchButton"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="32dp"
+                android:background="@android:color/transparent"
+                android:scaleType="centerInside"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/search" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="48dp"
+                android:layout_marginEnd="24dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <RadioGroup
+                    android:id="@+id/radioGroup"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/naver_font"
-                    android:text="상호명"
-                    android:textSize="15dp" />
+                    android:orientation="horizontal">
 
-                <RadioButton
-                    android:id="@+id/rb_address"
+                    <RadioButton
+                        android:id="@+id/rb_stname"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/naver_font"
+                        android:text="상호명"
+                        android:textSize="15dp" />
+
+                    <RadioButton
+                        android:id="@+id/rb_address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/naver_font"
+                        android:text="주소"
+                        android:textSize="15dp" />
+
+                    <RadioButton
+                        android:id="@+id/rb_id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/naver_font"
+                        android:text="건물번호"
+                        android:textSize="15dp" />
+
+                </RadioGroup>
+
+                <Button
+                    android:id="@+id/optionButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/naver_font"
-                    android:text="주소"
-                    android:textSize="15dp" />
+                    android:layout_alignParentRight="true"
+                    android:text="Button" />
 
-                <RadioButton
-                    android:id="@+id/rb_id"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/naver_font"
-                    android:text="건물번호"
-                    android:textSize="15dp" />
+            </RelativeLayout>
 
-            </RadioGroup>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <Switch
-                android:id="@+id/btn_switch"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
-                android:checked="true"
-                android:text="버튼 보이기" />
+    </FrameLayout>
 
-        </RelativeLayout>
+    <include layout="@layout/option_menu" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</FrameLayout>
+</androidx.drawerlayout.widget.DrawerLayout>
