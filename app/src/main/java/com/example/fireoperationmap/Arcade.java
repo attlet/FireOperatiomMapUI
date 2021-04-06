@@ -1,6 +1,6 @@
 package com.example.fireoperationmap;
 
-public class Arcade implements Comparable<Arcade>{
+public class Arcade {
     private String detail;
     private String id;
     private String num;
@@ -23,15 +23,4 @@ public class Arcade implements Comparable<Arcade>{
         return y;
     }
     public Arcade(){}
-
-    @Override
-    public int compareTo(Arcade arcade) {
-        int tmp = Integer.parseInt(this.num);
-        if (tmp == arcade.getNum())
-            return 0;
-        else if (tmp > arcade.getNum())
-            return 1;
-        else
-            return -1;
-    }
 }

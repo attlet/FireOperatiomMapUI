@@ -1,6 +1,6 @@
 package com.example.fireoperationmap;
 
-public class Approach implements Comparable<Approach>{
+public class Approach{
     private String name;
     private String address;
     private int num;
@@ -26,15 +26,4 @@ public class Approach implements Comparable<Approach>{
     }
 
     public Approach(){}
-
-    @Override
-    public int compareTo(Approach approach) {
-        int tmp = num;
-        if (tmp == approach.getNum())
-            return 0;
-        else if (tmp > approach.getNum())
-            return 1;
-        else
-            return -1;
-    }
 }

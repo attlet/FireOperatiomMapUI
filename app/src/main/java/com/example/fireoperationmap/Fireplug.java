@@ -1,6 +1,6 @@
 package com.example.fireoperationmap;
 
-public class Fireplug implements Comparable<Fireplug>{
+public class Fireplug{
     private float x;
     private float y;
     private int num;
@@ -16,15 +16,4 @@ public class Fireplug implements Comparable<Fireplug>{
     public int getNum() { return num; }
 
     public Fireplug(){}
-
-    @Override
-    public int compareTo(Fireplug fireplug) {
-        int tmp = num;
-        if (tmp == fireplug.getNum())
-            return 0;
-        else if (tmp > fireplug.getNum())
-            return 1;
-        else
-            return -1;
-    }
 }

@@ -162,7 +162,6 @@ public class MainActivity extends AppCompatActivity {
                     Arcade arcade = data.getValue(Arcade.class);
                     arcadeList.add(arcade);
                 }
-                Collections.sort(arcadeList);
 
                 approachList = new ArrayList<>();
                 for (DataSnapshot data : approachSnapshot.getChildren()) {
@@ -352,11 +351,13 @@ public class MainActivity extends AppCompatActivity {
                 R.drawable.arcade_n, R.drawable.arcade_o, R.drawable.arcade_p, R.drawable.arcade_q, R.drawable.arcade_r};
 
         ImageView[] fireplugIv = new ImageView[fireplugList.size()];       //소화전 이미지 추가
-        final int[] fireplugImgList = new int[]{R.drawable.fireplugimg_10, R.drawable.fireplugimg_20, R.drawable.fireplugimg_13, R.drawable.fireplugimg_14, R.drawable.fireplugimg_15,
-                 R.drawable.fireplugimg_16, R.drawable.fireplugimg_17, R.drawable.fireplugimg_18, R.drawable.fireplugimg_9, R.drawable.fireplugimg_10, R.drawable.fireplugimg_11,
-                 R.drawable.fireplugimg_12, R.drawable.fireplugimg_13, R.drawable.fireplugimg_14, R.drawable.fireplugimg_15, R.drawable.fireplugimg_16, R.drawable.fireplugimg_17,
-                 R.drawable.fireplugimg_18, R.drawable.fireplugimg_19, R.drawable.fireplugimg_20, R.drawable.fireplugimg_21, R.drawable.fireplugimg_22, R.drawable.fireplugimg_23,
-                 R.drawable.fireplugimg_24, R.drawable.fireplugimg_25, R.drawable.fireplugimg_26, R.drawable.fireplugimg_27};
+        final int[] fireplugImgList = new int[]{R.drawable.fireplugimg_1, R.drawable.fireplugimg_2, R.drawable.fireplugimg_3, R.drawable.fireplugimg_4,
+                R.drawable.fireplugimg_5, R.drawable.fireplugimg_6, R.drawable.fireplugimg_7, R.drawable.fireplugimg_8,
+                R.drawable.fireplugimg_9, R.drawable.fireplugimg_10, R.drawable.fireplugimg_11, R.drawable.fireplugimg_12,
+                R.drawable.fireplugimg_13, R.drawable.fireplugimg_14, R.drawable.fireplugimg_15, R.drawable.fireplugimg_16,
+                R.drawable.fireplugimg_17, R.drawable.fireplugimg_18, R.drawable.fireplugimg_19, R.drawable.fireplugimg_20,
+                R.drawable.fireplugimg_21, R.drawable.fireplugimg_22, R.drawable.fireplugimg_23, R.drawable.fireplugimg_24,
+                R.drawable.fireplugimg_25, R.drawable.fireplugimg_26, R.drawable.fireplugimg_27};
 
         float arcadeInitDp = 5f;
         RelativeLayout.LayoutParams arcadeParam = new RelativeLayout.LayoutParams(dpToPx(MainActivity.this, arcadeInitDp * photoView.getScale()), dpToPx(MainActivity.this, arcadeInitDp * photoView.getScale()));
@@ -376,7 +377,7 @@ public class MainActivity extends AppCompatActivity {
 
         for (int i = 0; i < arcadeList.size(); i++) {
             arcadeButton[i] = new ImageButton(this);
-            arcadeButton[i].setBackgroundResource(arcadeImgList[i]);
+            arcadeButton[i].setBackgroundResource(arcadeImgList[arcadeList.get(i).getNum() - 1]);
 
             arcadeButton[i].setLayoutParams(arcadeParam);
             RectF rect = photoView.getDisplayRect();
@@ -387,7 +388,7 @@ public class MainActivity extends AppCompatActivity {
 
         for (int i = 0; i < approachList.size(); i++) {
             approachButton[i] = new ImageButton(this);
-            approachButton[i].setBackgroundResource(approachImgList[i]);
+            approachButton[i].setBackgroundResource(approachImgList[approachList.get(i).getNum() - 1]);
 
             approachButton[i].setLayoutParams(approachParam);
             RectF rect = photoView.getDisplayRect();
@@ -398,7 +399,7 @@ public class MainActivity extends AppCompatActivity {
 
         for (int i = 0; i < auto_arcadeList.size(); i++) {
             auto_arcadeIv[i] = new ImageView(this);
-            auto_arcadeIv[i].setBackgroundResource(auto_arcadeImgList[i]);
+            auto_arcadeIv[i].setBackgroundResource(auto_arcadeImgList[auto_arcadeList.get(i).getNum() - 1]);
 
             auto_arcadeIv[i].setLayoutParams(auto_arcadeParam);
             RectF rect = photoView.getDisplayRect();
@@ -409,7 +410,7 @@ public class MainActivity extends AppCompatActivity {
 
         for (int i = 0; i < fireplugList.size(); i++) {
             fireplugIv[i] = new ImageView(this);
-            fireplugIv[i].setBackgroundResource(fireplugImgList[i]);
+            fireplugIv[i].setBackgroundResource(fireplugImgList[fireplugList.get(i).getNum() - 1]);
 
             fireplugIv[i].setLayoutParams(auto_arcadeParam);
             RectF rect = photoView.getDisplayRect();
