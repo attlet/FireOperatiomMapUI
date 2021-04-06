@@ -440,7 +440,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent2 = new Intent(getApplicationContext(), ApproachPop.class);
                 intent2.putExtra("Name", approachList.get(finalI).getName());
                 intent2.putExtra("Address", approachList.get(finalI).getAddress());
-                intent2.putExtra("Num", Integer.toString(finalI));
+                intent2.putExtra("Num", Integer.toString(approachList.get(finalI).getNum()));
                 startActivityForResult(intent2, 1);
             });
         }

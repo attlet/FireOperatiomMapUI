@@ -34,8 +34,7 @@ public class ApproachPop extends Activity {
         Intent intent = getIntent();
         name.setText("○진입로_" + intent.getStringExtra("Name"));
         address.setText("○건물주소: 청주시  " + intent.getStringExtra("Address"));
-
-        imageView.setImageResource(approach_switch[Integer.parseInt(intent.getStringExtra("Num"))]);
+        imageView.setImageResource(approach_switch[Integer.parseInt(intent.getStringExtra("Num")) - 1]);
 
     }
     public void mOnClose(View v){
