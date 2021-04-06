@@ -55,7 +55,7 @@
     <ImageView
         android:id="@+id/approachImg"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="300dp"
         android:src="@drawable/ic_launcher_background" />
 
 

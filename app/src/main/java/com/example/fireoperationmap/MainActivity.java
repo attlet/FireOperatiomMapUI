@@ -512,6 +512,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         arcadeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 for (int i = 0; i < arcadeList.size(); i++) {
@@ -530,6 +531,7 @@ public class MainActivity extends AppCompatActivity {
         Button optionButton = findViewById(R.id.optionButton);
         DrawerLayout drawer = findViewById(R.id.drawer);
         optionButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 drawer.openDrawer(GravityCompat.END);
