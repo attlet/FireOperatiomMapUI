@@ -498,8 +498,6 @@ public class MainActivity extends AppCompatActivity {
 
         Switch fireplugSwitch = findViewById(R.id.fireplug_switch);
         Switch arcadeSwitch = findViewById(R.id.arcade_switch);
-        Switch autoArcadeSwitch = findViewById(R.id.auto_arcade_switch);
-        Switch approachSwitch = findViewById(R.id.approach_switch);
 
         fireplugSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -520,27 +518,10 @@ public class MainActivity extends AppCompatActivity {
                         arcadeButton[i].setVisibility(View.INVISIBLE);
                     else arcadeButton[i].setVisibility(View.VISIBLE);
                 }
-            }
-        });
-
-        autoArcadeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 for (int i = 0; i < auto_arcadeList.size(); i++) {
                     if (auto_arcadeIv[i].getVisibility() == View.VISIBLE)
                         auto_arcadeIv[i].setVisibility(View.INVISIBLE);
                     else auto_arcadeIv[i].setVisibility(View.VISIBLE);
-                }
-            }
-        });
-
-        approachSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                for (int i = 0; i < approachList.size(); i++) {
-                    if (approachButton[i].getVisibility() == View.VISIBLE)
-                        approachButton[i].setVisibility(View.INVISIBLE);
-                    else approachButton[i].setVisibility(View.VISIBLE);
                 }
             }
         });

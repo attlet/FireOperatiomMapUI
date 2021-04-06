@@ -133,7 +133,7 @@
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/long_red_square"
                 android:fontFamily="@font/naver_font"
-                android:text=" : [협소구간] 중앙10호"
+                android:text=" : [소형펌프] 중앙10호"
                 android:textColor="#000000"
                 android:textSize="14dp" />
 
