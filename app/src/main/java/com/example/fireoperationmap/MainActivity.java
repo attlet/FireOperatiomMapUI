@@ -116,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
         //super.onBackPressed();
     }
 
+    //CustomAdapter 와 연결, 버튼과 DB 연결해주는 메써드
     private void initializeAdapterAndRecyclerView() {
         DatabaseReference dataRef = FirebaseDatabase.getInstance().getReference("Data");
         adapter = new CustomAdapter();
@@ -252,6 +253,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+    //라디오 버튼에 대한 검색 타입 설정
     private void createSearchView() {
         RadioGroup radioGroup = findViewById(R.id.radioGroup);
         ImageButton searchButton = findViewById(R.id.searchButton);
@@ -321,6 +324,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    //버튼 초기화
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     private void createMapView() {
         photoView = findViewById(R.id.photo_view);
@@ -329,7 +333,7 @@ public class MainActivity extends AppCompatActivity {
         photoView.setMediumScale(3.8f);
         photoView.setImageResource(R.drawable.operation_map);
 
-        photoView.setScale(2.7f, 910.0f, 0.0f, false);
+        photoView.setScale(2.7f, 900.0f, 0.0f, false);
 
         Toast.makeText(getApplicationContext(), "로딩 완료", Toast.LENGTH_SHORT).show();
         photoView.setScale(2.7f, 1260.0f, 0.0f, false);
@@ -384,6 +388,7 @@ public class MainActivity extends AppCompatActivity {
             arcadeButton[i].setX((rect.left + ((rect.right - rect.left) * arcadeList.get(i).getX()) - arcadeParam.width / 2.0f));
             arcadeButton[i].setY((rect.top + ((rect.bottom - rect.top) * arcadeList.get(i).getY()) - arcadeParam.height / 2.0f));
             mapView.addView(arcadeButton[i]);
+            arcadeButton[i].setVisibility(View.INVISIBLE);
         }
 
         for (int i = 0; i < approachList.size(); i++) {
@@ -406,6 +411,7 @@ public class MainActivity extends AppCompatActivity {
             auto_arcadeIv[i].setX((rect.left + ((rect.right - rect.left) * auto_arcadeList.get(i).getX()) - auto_arcadeParam.width/ 2.0f));
             auto_arcadeIv[i].setY((rect.top + ((rect.bottom - rect.top) * auto_arcadeList.get(i).getY()) - auto_arcadeParam.height / 2.0f));
             mapView.addView(auto_arcadeIv[i]);
+            auto_arcadeIv[i].setVisibility(View.INVISIBLE);
         }
 
         for (int i = 0; i < fireplugList.size(); i++) {
@@ -417,6 +423,7 @@ public class MainActivity extends AppCompatActivity {
             fireplugIv[i].setX((rect.left + ((rect.right - rect.left) * fireplugList.get(i).getX()) - fireplugParam.width/ 2.0f));
             fireplugIv[i].setY((rect.top + ((rect.bottom - rect.top) * fireplugList.get(i).getY()) - fireplugParam.height / 2.0f));
             mapView.addView(fireplugIv[i]);
+            fireplugIv[i].setVisibility(View.INVISIBLE);
         }
 
         for (int i = 0; i < arcadeList.size(); i++) {
@@ -445,7 +452,7 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
-
+        //버튼 사이즈에 대한 실시간 변경
         photoView.setOnMatrixChangeListener(rect -> {
             ImageView icon = findViewById(R.id.pin);
             float pinWidth = icon.getWidth();
@@ -500,6 +507,7 @@ public class MainActivity extends AppCompatActivity {
         Switch fireplugSwitch = findViewById(R.id.fireplug_switch);
         Switch arcadeSwitch = findViewById(R.id.arcade_switch);
 
+        //소화전 버튼의 가시성 여부
         fireplugSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -511,8 +519,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //아케이드 버튼의 가시성 여부
         arcadeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 for (int i = 0; i < arcadeList.size(); i++) {

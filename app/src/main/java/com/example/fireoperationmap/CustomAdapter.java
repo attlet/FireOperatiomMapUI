@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 import java.util.List;
 
+//FireBase DB에 있는 점포 정보들을 연결해주는 클래스
 public class CustomAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements Filterable {
     public interface OnItemClickLister {
         void onItemClick(View view, int position);
@@ -37,6 +38,7 @@ public class CustomAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         this.listener = listener;
     }
 
+    //검색 필터
     private final Filter customFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
@@ -68,6 +70,7 @@ public class CustomAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     };
 
+    //리스트에 대한 간단 정보
     class SimpleViewHolder extends RecyclerView.ViewHolder {
         TextView st_name, address;
         public SimpleViewHolder(@NonNull View itemView) {
@@ -89,6 +92,7 @@ public class CustomAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     }
 
+    //리스트에 대한 상세 정보
     class DetailedViewHolder extends RecyclerView.ViewHolder {
         TextView id, st_name, address, structure, floor, st_type, fire_plug;
         ImageView photo;
