@@ -25,6 +25,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 import java.util.ArrayList;
@@ -62,6 +63,12 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
 
         auth = FirebaseAuth.getInstance(); // 파이어베이스 인증 객체 초기화.
+
+        if(auth.getCurrentUser() != null){
+            Toast.makeText(Login.this, "자동 로그인중", Toast.LENGTH_SHORT).show();
+            Intent intent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
+            startActivityForResult(intent, REQ_SIGN_GOOGLE);
+        }
 
         btn_google = findViewById(R.id.btn_google);
         btn_google.setOnClickListener(new View.OnClickListener() { // 구글 로그인 버튼을 클릭했을 때 이곳을 수행.

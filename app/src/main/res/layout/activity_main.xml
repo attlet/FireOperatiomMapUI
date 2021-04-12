@@ -106,6 +106,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/naver_font"
                         android:text="상호명"
+                        android:textColor="#000000"
                         android:textSize="15dp" />
 
                     <RadioButton
@@ -113,6 +114,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/naver_font"
+                        android:textColor="#000000"
                         android:text="주소"
                         android:textSize="15dp" />
 
@@ -121,6 +123,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/naver_font"
+                        android:textColor="#000000"
                         android:text="건물번호"
                         android:textSize="15dp" />
 
@@ -131,8 +134,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
+                    android:backgroundTint="#000000"
+                    android:fontFamily="@font/naver_font"
                     android:text="필요정보"
-                    android:fontFamily="@font/naver_font"/>
+                    android:textColor="@color/white"
+                    android:textSize="14dp" />
 
             </RelativeLayout>
 

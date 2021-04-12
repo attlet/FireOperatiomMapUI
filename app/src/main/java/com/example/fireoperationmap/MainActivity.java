@@ -336,7 +336,7 @@ public class MainActivity extends AppCompatActivity {
         photoView.setScale(2.7f, 900.0f, 0.0f, false);
 
         Toast.makeText(getApplicationContext(), "로딩 완료", Toast.LENGTH_SHORT).show();
-        photoView.setScale(2.7f, 1260.0f, 0.0f, false);
+        photoView.setScale(2.7f, 940.0f, 0.0f, false);
 
 
         ImageButton[] arcadeButton = new ImageButton[arcadeList.size()];
