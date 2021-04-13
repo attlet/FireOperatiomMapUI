@@ -32,23 +32,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="283dp"
-        android:layout_height="103dp"
-        android:layout_marginStart="178dp"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="176dp"
-        android:drawableLeft="@drawable/cb_logo"
-        android:drawableRight="@drawable/cjdb119"
-        android:gravity="center_horizontal"
-        android:paddingTop="10dp"
-        android:textSize="32sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_google" />
-
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="426dp"
@@ -59,6 +42,20 @@
         app:layout_constraintHorizontal_bias="0.533"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/yukgeori_hori" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="283dp"
+        android:layout_height="103dp"
+        android:drawableLeft="@drawable/cb_logo"
+        android:drawableRight="@drawable/cjdb119"
+        android:gravity="bottom"
+        android:paddingTop="10dp"
+        android:textSize="32sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_google" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
