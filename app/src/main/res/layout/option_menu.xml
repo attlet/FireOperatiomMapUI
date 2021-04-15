@@ -42,7 +42,8 @@
             android:layout_height="45dp"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
-            android:text="시장 현황표"/>
+            android:backgroundTint="#FA4614"
+            android:text="시장 현황표" />
 
         <TextView
             android:id="@+id/textView9"

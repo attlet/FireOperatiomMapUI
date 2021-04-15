@@ -38,6 +38,22 @@ public class SituationPop extends Activity {
 
         finish_btn = (Button) findViewById(R.id.finish_button);
 
+        Intent intent = getIntent();
+        Building_total.setText(intent.getStringExtra("Building_total"));
+        Building_sale.setText(intent.getStringExtra("Building_sale"));
+        Building_food.setText(intent.getStringExtra("Building_food"));
+        Building_multiple.setText(intent.getStringExtra("Building_multiple"));
+        Building_house.setText(intent.getStringExtra("Building_house"));
+        Building_the_other.setText(intent.getStringExtra("Building_the_other"));
+
+        Arcade_total.setText(intent.getStringExtra("Arcade_total"));
+        Arcade_sale.setText(intent.getStringExtra("Arcade_sale"));
+        Arcade_food.setText(intent.getStringExtra("Arcade_food"));
+        Arcade_multiple.setText(intent.getStringExtra("Arcade_multiple"));
+        Arcade_building.setText(intent.getStringExtra("Arcade_building"));
+        Arcade_the_other.setText(intent.getStringExtra("Arcade_the_other"));
+
+
     }
     public void mOnClose(View v){
         finish();
