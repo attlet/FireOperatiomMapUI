@@ -36,6 +36,14 @@
             android:textSize="14dp"
             android:text="Tip) 옥상 아케이트, 진입로만 버튼 클릭 가능합니다." />
 
+        <Button
+            android:id="@+id/situation"
+            android:layout_width="120dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:text="시장 현황표"/>
+
         <TextView
             android:id="@+id/textView9"
             android:gravity="bottom"
@@ -44,6 +52,7 @@
             android:layout_marginBottom="10dp"
             android:textSize="13dp"
             android:text="핸드폰 기종에 따라 화면이 깨질 수 있습니다." />
+
 
     </LinearLayout>
 </com.google.android.material.navigation.NavigationView>

@@ -30,6 +30,7 @@
 
         <activity android:name=".ArcadePop" android:theme="@android:style/Theme.Dialog" />
         <activity android:name=".ApproachPop" android:theme="@android:style/Theme.Dialog" />
+        <activity android:name=".SituationPop" android:theme="@android:style/Theme.Dialog" />
     </application>
 
 </manifest>

@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
     private List<Approach> approachList = new ArrayList<>();
     private List<Auto_Arcade> auto_arcadeList = new ArrayList<>();
     private List<Fireplug> fireplugList = new ArrayList<>();
+    private List<Situation> situationList = new ArrayList<>();
     private final float slidingPanelAnchorPoint = 0.4f;
     private final PointF curRatio = new PointF(0.0f, 0.0f);
     private long backBtnTime = 0;
@@ -134,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
                 DataSnapshot approachSnapshot = snapshot.child("Approach");
                 DataSnapshot autoArcadeSnapshot = snapshot.child("AutoArcade");
                 DataSnapshot fireplugSnapshot = snapshot.child("Fireplug");
+                DataSnapshot situationSnapshot = snapshot.child("Situaion");
 
                 if (!snapshot.hasChildren())
                     Toast.makeText(MainActivity.this, "체크용", Toast.LENGTH_SHORT).show();
@@ -180,6 +182,12 @@ public class MainActivity extends AppCompatActivity {
                 for (DataSnapshot data : fireplugSnapshot.getChildren()) {
                     Fireplug fireplug = data.getValue(Fireplug.class);
                     fireplugList.add(fireplug);
+                }
+
+                situationList = new ArrayList<>();
+                for (DataSnapshot data : situationSnapshot.getChildren()) {
+                    Situation situation = data.getValue(Situation.class);
+                    situationList.add(situation);
                 }
 
                 createMapView();
@@ -506,6 +514,7 @@ public class MainActivity extends AppCompatActivity {
 
         Switch fireplugSwitch = findViewById(R.id.fireplug_switch);
         Switch arcadeSwitch = findViewById(R.id.arcade_switch);
+        Button situationBtn = findViewById(R.id.situation);
 
         //소화전 버튼의 가시성 여부
         fireplugSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -535,6 +544,26 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        situationBtn.setOnClickListener(v -> {
+                int finalI = 0;
+                Intent intent3 = new Intent(getApplicationContext(), SituationPop.class);
+                intent3.putExtra("Building_total", situationList.get(finalI).getBuilding_total());
+                intent3.putExtra("Building_sale", situationList.get(finalI).getBuilding_sale());
+                intent3.putExtra("Building_food", situationList.get(finalI).getBuilding_food());
+                intent3.putExtra("Building_multiple", situationList.get(finalI).getBuilding_multiple());
+                intent3.putExtra("Building_house", situationList.get(finalI).getBuilding_house());
+                intent3.putExtra("Building_the_other", situationList.get(finalI).getBuilding_the_other());
+
+                intent3.putExtra("Arcade_total", situationList.get(finalI).getArcade_total());
+                intent3.putExtra("Arcade_sale", situationList.get(finalI).getArcade_sale());
+                intent3.putExtra("Arcade_food", situationList.get(finalI).getArcade_food());
+                intent3.putExtra("Arcade_multiple", situationList.get(finalI).getArcade_multiple());
+                intent3.putExtra("Arcade_building", situationList.get(finalI).getArcade_building());
+                intent3.putExtra("Arcade_the_other", situationList.get(finalI).getArcade_the_other());
+                startActivityForResult(intent3, 1);
+            });
+
 
         Button optionButton = findViewById(R.id.optionButton);
         DrawerLayout drawer = findViewById(R.id.drawer);
