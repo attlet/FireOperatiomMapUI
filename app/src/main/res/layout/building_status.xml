@@ -69,9 +69,12 @@
             android:layout_marginBottom="5dp"
             android:fontFamily="@font/naver_font"
             android:gravity="center"
-            android:text=" ● 건축물/점포 : 280/794개소, 좌판 55개소"
+            android:text="● 건축물/점포 : 280/794개소, 좌판 55개소"
             android:textColor="#000"
-            android:textSize="17dp" />
+            android:autoSizeTextType="uniform"
+            android:autoSizeMinTextSize="12sp"
+            android:autoSizeMaxTextSize="17sp"
+            android:autoSizeStepGranularity="1sp" />
 
     </LinearLayout>
 
@@ -93,6 +96,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textColor="#000"
                 android:background="@drawable/cell_shape"
                 android:gravity="center"/>
 
@@ -104,6 +108,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textColor="#000"
                 android:background="@drawable/cell_shape"
                 android:gravity="center"/>
 
@@ -115,6 +120,7 @@
                 android:textSize="19dp"
                 android:fontFamily="@font/naver_font"
                 android:padding="1dp"
+                android:textColor="#000"
                 android:background="@drawable/cell_shape"
                 android:gravity="center"/>
 
@@ -126,6 +132,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textColor="#000"
                 android:background="@drawable/cell_shape"
                 android:gravity="center"/>
 
@@ -137,6 +144,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textColor="#000"
                 android:background="@drawable/cell_shape"
                 android:gravity="center"/>
 
@@ -148,6 +156,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textColor="#000"
                 android:background="@drawable/cell_shape"
                 android:gravity="center"/>
         </TableRow>
@@ -165,6 +174,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textColor="#000"
                 android:background="@drawable/cell_shape"
                 android:gravity="center"/>
 
@@ -177,6 +187,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textColor="#000"
                 android:background="@drawable/cell_shape"
                 android:gravity="center"/>
 
@@ -189,6 +200,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textColor="#000"
                 android:background="@drawable/cell_shape"
                 android:gravity="center"/>
 
@@ -201,6 +213,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textColor="#000"
                 android:background="@drawable/cell_shape"
                 android:gravity="center"/>
 
@@ -213,6 +226,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textColor="#000"
                 android:background="@drawable/cell_shape"
                 android:gravity="center"/>
 
@@ -225,6 +239,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textColor="#000"
                 android:background="@drawable/cell_shape"
                 android:gravity="center"/>
         </TableRow>
@@ -247,7 +262,10 @@
             android:gravity="center"
             android:text=" ● 아케이드 구역내 점포 현황"
             android:textColor="#000"
-            android:textSize="17dp" />
+            android:autoSizeTextType="uniform"
+            android:autoSizeMinTextSize="12sp"
+            android:autoSizeMaxTextSize="17sp"
+            android:autoSizeStepGranularity="1sp" />
 
     </LinearLayout>
 
@@ -268,6 +286,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textColor="#000"
                 android:background="@drawable/cell_shape"
                 android:gravity="center"/>
 
@@ -279,6 +298,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textColor="#000"
                 android:background="@drawable/cell_shape"
                 android:gravity="center"/>
 
@@ -290,6 +310,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textColor="#000"
                 android:background="@drawable/cell_shape"
                 android:gravity="center"/>
 
@@ -301,6 +322,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textColor="#000"
                 android:background="@drawable/cell_shape"
                 android:gravity="center"/>
 
@@ -312,6 +334,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textColor="#000"
                 android:background="@drawable/cell_shape"
                 android:gravity="center"/>
 
@@ -323,6 +346,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textColor="#000"
                 android:background="@drawable/cell_shape"
                 android:gravity="center"/>
         </TableRow>
@@ -340,6 +364,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textColor="#000"
                 android:background="@drawable/cell_shape"
                 android:gravity="center"/>
 
@@ -352,6 +377,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textColor="#000"
                 android:background="@drawable/cell_shape"
                 android:gravity="center"/>
 
@@ -364,6 +390,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textColor="#000"
                 android:background="@drawable/cell_shape"
                 android:gravity="center"/>
 
@@ -376,6 +403,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textColor="#000"
                 android:background="@drawable/cell_shape"
                 android:gravity="center"/>
 
@@ -388,6 +416,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textColor="#000"
                 android:background="@drawable/cell_shape"
                 android:gravity="center"/>
 
@@ -400,6 +429,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textColor="#000"
                 android:background="@drawable/cell_shape"
                 android:gravity="center"/>
         </TableRow>

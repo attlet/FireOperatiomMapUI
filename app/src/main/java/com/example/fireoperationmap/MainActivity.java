@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
                 DataSnapshot approachSnapshot = snapshot.child("Approach");
                 DataSnapshot autoArcadeSnapshot = snapshot.child("AutoArcade");
                 DataSnapshot fireplugSnapshot = snapshot.child("Fireplug");
-                DataSnapshot situationSnapshot = snapshot.child("Situaion");
+                DataSnapshot situationSnapshot = snapshot.child("Situation");
 
                 if (!snapshot.hasChildren())
                     Toast.makeText(MainActivity.this, "체크용", Toast.LENGTH_SHORT).show();
