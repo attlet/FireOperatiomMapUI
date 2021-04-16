@@ -16,11 +16,11 @@ public class Situation {
     private String Arcade_the_other; //아케이드 구역내 기타
 
     public String getBuilding_total() { return Building_total; }
-    public String getBuilding_sale() { return Building_total; }
-    public String getBuilding_food() { return Building_total; }
-    public String getBuilding_multiple() { return Building_total; }
-    public String getBuilding_house() { return Building_total; }
-    public String getBuilding_the_other() { return Building_total; }
+    public String getBuilding_sale() { return Building_sale; }
+    public String getBuilding_food() { return Building_food; }
+    public String getBuilding_multiple() { return Building_multiple; }
+    public String getBuilding_house() { return Building_house; }
+    public String getBuilding_the_other() { return Building_the_other; }
 
     public String getArcade_total() { return Arcade_total; }
     public String getArcade_sale() { return Arcade_sale; }

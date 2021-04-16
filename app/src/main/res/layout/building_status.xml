@@ -66,7 +66,6 @@
             android:layout_width="match_parent"
             android:layout_height="17dp"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="5dp"
             android:fontFamily="@font/naver_font"
             android:text="● 건축물/점포 : 280/794개소, 좌판 55개소"
             android:textColor="#000"
@@ -81,6 +80,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:padding="5dp"
         >
 
         <TableRow
@@ -256,7 +256,6 @@
             android:layout_width="match_parent"
             android:layout_height="17dp"
             android:layout_marginTop="15dp"
-            android:layout_marginBottom="5dp"
             android:fontFamily="@font/naver_font"
             android:text=" ● 아케이드 구역내 점포 현황"
             android:textColor="#000"
@@ -270,7 +269,8 @@
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="5dp">
 
         <TableRow
             android:layout_width="match_parent"
