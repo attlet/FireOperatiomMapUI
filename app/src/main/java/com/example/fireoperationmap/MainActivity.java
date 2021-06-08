@@ -16,14 +16,12 @@ import android.graphics.Insets;
 import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.graphics.RectF;
-import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.View;
 import android.view.WindowInsets;
 import android.view.WindowMetrics;
@@ -49,10 +47,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -61,12 +57,13 @@ public class MainActivity extends AppCompatActivity {
     private SlidingUpPanelLayout slidingUpPanelLayout;
     private PhotoView photoView;
     private EditText searchField;
-    private Map<Integer, Map<Integer, Place>> sectionData = new HashMap<>();
-    private List<Arcade> arcadeList = new ArrayList<>();
-    private List<Approach> approachList = new ArrayList<>();
-    private List<Auto_Arcade> auto_arcadeList = new ArrayList<>();
-    private List<Fireplug> fireplugList = new ArrayList<>();
-    private List<Situation> situationList = new ArrayList<>();
+    //private Map<Integer, Map<Integer, Place>> sectionData = new HashMap<>();
+    //private List<Arcade> arcadeList = new ArrayList<>();
+    //private List<Approach> approachList = new ArrayList<>();
+    //private List<Auto_Arcade> auto_arcadeList = new ArrayList<>();
+    //private List<Fireplug> fireplugList = new ArrayList<>();
+    //private List<Situation> situationList = new ArrayList<>();
+    private List<OperationMap> mapList = new ArrayList<>();
     private final float slidingPanelAnchorPoint = 0.4f;
     private final PointF curRatio = new PointF(0.0f, 0.0f);
     private long backBtnTime = 0;
@@ -96,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        initializeAdapterAndRecyclerView();
+        getMapData();
         createSearchView();
     }
 
@@ -118,8 +115,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //CustomAdapter 와 연결, 버튼과 DB 연결해주는 메써드
-    private void initializeAdapterAndRecyclerView() {
+    private void getMapData() {
         DatabaseReference dataRef = FirebaseDatabase.getInstance().getReference("Data");
+
         adapter = new CustomAdapter();
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -129,69 +127,64 @@ public class MainActivity extends AppCompatActivity {
         dataRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                DataSnapshot userSnapshot = snapshot.child("User");
-                DataSnapshot sectionSnapshot = snapshot.child("Section");
-                DataSnapshot arcadeSnapshot = snapshot.child("Arcade");
-                DataSnapshot approachSnapshot = snapshot.child("Approach");
-                DataSnapshot autoArcadeSnapshot = snapshot.child("AutoArcade");
-                DataSnapshot fireplugSnapshot = snapshot.child("Fireplug");
-                DataSnapshot situationSnapshot = snapshot.child("Situation");
+                DataSnapshot mapSnapshot = snapshot.child("Map");
 
                 if (!snapshot.hasChildren())
-                    Toast.makeText(MainActivity.this, "체크용", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "snapshot has no child in initializeAdapterAndRecyclerView", Toast.LENGTH_SHORT).show();
 
-                adapter.init();
-                for (DataSnapshot data : userSnapshot.getChildren()) {
-                    User user = data.getValue(User.class);
-                    adapter.addUser(user);
+                for (DataSnapshot mapData : mapSnapshot.getChildren()) {
+                    OperationMap operationMap = mapData.getValue(OperationMap.class);
+
+                    DataSnapshot userSnapshot = mapData.child("User");
+                    DataSnapshot sectionSnapshot = mapData.child("Section");
+                    DataSnapshot arcadeSnapshot = mapData.child("Arcade");
+                    DataSnapshot approachSnapshot = mapData.child("Approach");
+                    DataSnapshot autoArcadeSnapshot = mapData.child("AutoArcade");
+                    DataSnapshot fireplugSnapshot = mapData.child("Fireplug");
+
+                    for (DataSnapshot data : userSnapshot.getChildren()) {
+                        User user = data.getValue(User.class);
+                        operationMap.userList.add(user);
+                    }
+
+                    int sectionNum = 1;
+                    for (DataSnapshot placeSnapshot : sectionSnapshot.getChildren()) {
+                        operationMap.sectionData.put(sectionNum, new HashMap<>());
+
+                        int placeNum = 1;
+                        for (DataSnapshot placeData : placeSnapshot.getChildren()) {
+                            Place place = placeData.getValue(Place.class);
+                            operationMap.sectionData.get(sectionNum).put(placeNum, place);
+                            placeNum++;
+                        }
+                        sectionNum++;
+                    }
+
+                    for (DataSnapshot data : arcadeSnapshot.getChildren()) {
+                        Arcade arcade = data.getValue(Arcade.class);
+                        operationMap.arcadeList.add(arcade);
+                    }
+
+                    for (DataSnapshot data : approachSnapshot.getChildren()) {
+                        Approach approach = data.getValue(Approach.class);
+                        operationMap.approachList.add(approach);
+                    }
+
+                    for (DataSnapshot data : autoArcadeSnapshot.getChildren()) {
+                        Auto_Arcade auto_arcade = data.getValue(Auto_Arcade.class);
+                        operationMap.auto_arcadeList.add(auto_arcade);
+                    }
+
+                    for (DataSnapshot data : fireplugSnapshot.getChildren()) {
+                        Fireplug fireplug = data.getValue(Fireplug.class);
+                        operationMap.fireplugList.add(fireplug);
+                    }
+
+                    mapList.add(operationMap);
                 }
+                createMapView(mapList.get(0));
+                adapter.init(mapList.get(0)); //일단 첫번째 지도 로드
                 recyclerView.setAdapter(adapter);
-
-                sectionData = new HashMap<>();
-                for (DataSnapshot sectionData : sectionSnapshot.getChildren()) {
-                    int sectionKey = Integer.parseInt(sectionData.getKey().split("_")[1]);
-                    if (!MainActivity.this.sectionData.containsKey(sectionKey)) {
-                        MainActivity.this.sectionData.put(sectionKey, new HashMap<>());
-                    }
-                    for (DataSnapshot placeData : sectionData.getChildren()) {
-                        Place place = placeData.getValue(Place.class);
-                        int placeKey = Integer.parseInt(placeData.getKey().split("_")[1]);
-                        MainActivity.this.sectionData.get(sectionKey).put(placeKey, place);
-                    }
-                }
-
-                arcadeList = new ArrayList<>();
-                for (DataSnapshot data : arcadeSnapshot.getChildren()) {
-                    Arcade arcade = data.getValue(Arcade.class);
-                    arcadeList.add(arcade);
-                }
-
-                approachList = new ArrayList<>();
-                for (DataSnapshot data : approachSnapshot.getChildren()) {
-                    Approach approach = data.getValue(Approach.class);
-                    approachList.add(approach);
-                }
-
-                auto_arcadeList = new ArrayList<>();
-                for (DataSnapshot data : autoArcadeSnapshot.getChildren()) {
-                    Auto_Arcade auto_arcade = data.getValue(Auto_Arcade.class);
-                    auto_arcadeList.add(auto_arcade);
-                }
-
-                fireplugList = new ArrayList<>();
-                for (DataSnapshot data : fireplugSnapshot.getChildren()) {
-                    Fireplug fireplug = data.getValue(Fireplug.class);
-                    fireplugList.add(fireplug);
-                }
-
-                situationList = new ArrayList<>();
-                for (DataSnapshot data : situationSnapshot.getChildren()) {
-                    Situation situation = data.getValue(Situation.class);
-                    situationList.add(situation);
-                }
-
-                createMapView();
-                Toast.makeText(MainActivity.this, "로딩 완료", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -200,8 +193,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //아이템 클릭시 이벤트 설정
-        adapter.setOnSimpleItemClickListener((view, position) -> {
+        adapter.setOnSimpleItemClickListener((view, operationMap, position) -> {
             User user = adapter.getItem(position);
             int sectionNum = Integer.parseInt(user.getId().split("-")[0]);
             int placeNum = Integer.parseInt(user.getId().split("-")[1]);
@@ -213,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
             searchField.clearFocus();
 
             //비율 좌표 가져오기
-            curRatio.set(sectionData.get(sectionNum).get(placeNum).getX(), sectionData.get(sectionNum).get(placeNum).getY());
+            curRatio.set(operationMap.sectionData.get(sectionNum).get(placeNum).getX(), operationMap.sectionData.get(sectionNum).get(placeNum).getY());
 
             ImageView icon = findViewById(R.id.pin);
             icon.setVisibility(View.VISIBLE);
@@ -334,7 +326,7 @@ public class MainActivity extends AppCompatActivity {
 
     //버튼 초기화
     @SuppressLint("UseSwitchCompatOrMaterialCode")
-    private void createMapView() {
+    private void createMapView(OperationMap operationMap) {
         photoView = findViewById(R.id.photo_view);
         //줌 비율 설정
         photoView.setMaximumScale(7.0f);
@@ -346,6 +338,10 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), "로딩 완료", Toast.LENGTH_SHORT).show();
         photoView.setScale(2.7f, 940.0f, 0.0f, false);
 
+        List<Arcade> arcadeList = operationMap.arcadeList;
+        List<Approach> approachList = operationMap.approachList;
+        List<Auto_Arcade> auto_arcadeList = operationMap.auto_arcadeList;
+        List<Fireplug> fireplugList = operationMap.fireplugList;
 
         ImageButton[] arcadeButton = new ImageButton[arcadeList.size()];
         FrameLayout mapView = findViewById(R.id.mapView);
@@ -500,7 +496,6 @@ public class MainActivity extends AppCompatActivity {
 
         Switch fireplugSwitch = findViewById(R.id.fireplug_switch);
         Switch arcadeSwitch = findViewById(R.id.arcade_switch);
-        Button situationBtn = findViewById(R.id.situation);
 
         //소화전 버튼의 가시성 여부
         fireplugSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -531,6 +526,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Button optionButton = findViewById(R.id.optionButton);
+        DrawerLayout drawer = findViewById(R.id.drawer);
+        optionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawer.openDrawer(GravityCompat.END);
+            }
+        });
+
+        /*
+        Button situationBtn = findViewById(R.id.situation);
         situationBtn.setOnClickListener(v -> {
                 int finalI = 0;
                 Intent intent3 = new Intent(getApplicationContext(), SituationPop.class);
@@ -550,16 +556,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent3, 1);
             });
 
-
-        Button optionButton = findViewById(R.id.optionButton);
-        DrawerLayout drawer = findViewById(R.id.drawer);
-        optionButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                drawer.openDrawer(GravityCompat.END);
-            }
-        });
+         */
     }
 
     public int dpToPx(Context context, float dp) {

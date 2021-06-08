@@ -19,12 +19,13 @@ import java.util.List;
 //FireBase DB에 있는 점포 정보들을 연결해주는 클래스
 public class CustomAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements Filterable {
     public interface OnItemClickLister {
-        void onItemClick(View view, int position);
+        void onItemClick(View view, OperationMap operationMap, int position);
     }
 
     private List<User> userList = new ArrayList<>();
     private List<User> userListFull = new ArrayList<>();
     private CustomAdapter.OnItemClickLister listener;
+    private OperationMap operationMap;
     private enum SearchType {
         ST_NAME, ADDRESS, ID
     }
@@ -86,7 +87,7 @@ public class CustomAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     userList.clear();
                     userList.add(tmp);
                     notifyDataSetChanged();
-                    listener.onItemClick(view, 0);
+                    listener.onItemClick(view, operationMap, 0);
                 }
             });
         }
@@ -167,9 +168,10 @@ public class CustomAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         return userList.size();
     }
 
-    public void init() {
-        userList = new ArrayList<>();
-        userListFull = new ArrayList<>();
+    public void init(OperationMap map) {
+        operationMap = map;
+        userListFull = map.userList;
+        userList = new ArrayList<>(userListFull);
     }
 
     public User getItem(int position) {
@@ -183,10 +185,6 @@ public class CustomAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 return user;
         }
         return null;
-    }
-
-    public void addUser(User user) {
-        this.userListFull.add(user);
     }
 
     public void clearRecyclerView() {
